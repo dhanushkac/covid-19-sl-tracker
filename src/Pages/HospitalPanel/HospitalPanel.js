@@ -1,5 +1,5 @@
 import React from 'react';
-import {Card, Col, Row, Typography} from 'antd';
+import {Card, Col, Row, Tooltip, Typography} from 'antd';
 import {TwitterTimelineEmbed} from "react-twitter-embed";
 import './HospitalPanel.css';
 
@@ -13,9 +13,12 @@ const HospitalPanel = ({data}) => {
             <Col xs={{span: 24}} sm={{span: 24}} md={{span: 20}} style={{marginTop: '25px'}}>
                 <Row>
                     {data.map(item => {
+                        const titleNode = <Tooltip placement="top" title={item.hospital.name}>
+                            <Text>{item.hospital.name}</Text>
+                        </Tooltip>;
                         return <Col key={item.hospital_id} xs={{span: 24}} sm={{span: 11}} md={{span: 5}}
                                     style={{marginRight: '20px', marginBottom: '20px'}}>
-                            <Card title={item.hospital.name}>
+                            <Card title={titleNode}>
                                 <div>
                                     <span className="cumulative-local">{item.cumulative_local}</span>
                                     <Text type="secondary" className="treatment-local">{item.treatment_local} new
