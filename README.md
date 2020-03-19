@@ -2,14 +2,13 @@
 
 A simple dashboard for the realtime COVID-19 patient data of the Sri Lanka.
 
-[![Netlify Status](https://api.netlify.com/api/v1/badges/b3cd73d0-3c97-43d4-a98e-905d1b3f7e10/deploy-status)](https://app.netlify.com/sites/covid-19-sl/deploys)
-
 The dashboard can be viewed here [https://covid-19-sl.netlify.com/](https://covid-19-sl.netlify.com/)
 
 ## Tech Stack
 
 - [React](https://reactjs.org/)
 - [Ant Design](https://ant.design/)
+- [React Moment](https://www.npmjs.com/package/react-moment)
 
 This project is powered by [http://hpb.health.gov.lk/api-documentation](http://hpb.health.gov.lk/api-documentation)
 
