@@ -5,15 +5,15 @@ import './HospitalPanel.css';
 
 const {Title, Text} = Typography;
 
-const HospitalDataGrid = ({data}) => {
+const HospitalPanel = ({data}) => {
 
-    return <div style={{margin: 'auto', marginTop: '25px'}}>
+    return <div className="hospital-panel">
         <Title level={2}>Current status of the hospitals</Title>
         <Row>
-            <Col xs={{span: 24}} md={{span: 18}} style={{marginTop: '25px'}}>
+            <Col xs={{span: 24}} sm={{span: 24}} md={{span: 18}} style={{marginTop: '25px'}}>
                 <Row>
                     {data.map(item => {
-                        return <Col key={item.hospital_id} xs={{span: 24}} md={{span: 5}}
+                        return <Col key={item.hospital_id} xs={{span: 24}} sm={{span: 11}} md={{span: 6}}
                                     style={{marginRight: '20px', marginBottom: '20px'}}>
                             <Card title={item.hospital.name}>
                                 <div>
@@ -51,4 +51,4 @@ const HospitalDataGrid = ({data}) => {
     </div>;
 };
 
-export default HospitalDataGrid;
+export default HospitalPanel;

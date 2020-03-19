@@ -1,0 +1,27 @@
+.card {
+    font-weight: 600;
+    font-size: 1.8em;
+    text-align: center;
+    background: #ff4d4f;
+    border-radius: 15px;
+    padding: 36px 10px 10px;
+    width: 95%;
+    margin: auto auto 64px;
+    color: white !important;
+}
+
+.card-title {
+    margin-top: 10px;
+    color: white !important;
+}
+
+.card-status {
+    margin: 0.2em 0 0.3em !important;
+    font-size: 2.4em !important;
+    color: white !important;
+}
+
+.new-status-text {
+    font-size: 0.6em;
+    height: 23px;
+}
