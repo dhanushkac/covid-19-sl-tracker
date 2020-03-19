@@ -7,7 +7,7 @@ A simple dashboard for the realtime COVID-19 patient data of the Sri Lanka.
 - [React](https://reactjs.org/)
 - [Ant Design](https://ant.design/)
 
-This project is created using [http://hpb.health.gov.lk/api-documentation]http://hpb.health.gov.lk/api-documentation
+This project is created using [http://hpb.health.gov.lk/api-documentation](http://hpb.health.gov.lk/api-documentation)
 
 ## Available Scripts
 
