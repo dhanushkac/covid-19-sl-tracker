@@ -1,6 +1,7 @@
 import React from 'react';
 import {Card, Col, Row, Tooltip, Typography} from 'antd';
 import {TwitterTimelineEmbed} from "react-twitter-embed";
+import {formatNumber} from "../../utils/Numbers";
 import './HospitalPanel.css';
 
 const {Title, Text} = Typography;
@@ -16,12 +17,18 @@ const HospitalPanel = ({data}) => {
                         const titleNode = <Tooltip placement="top" title={item.hospital.name}>
                             <Text>{item.hospital.name}</Text>
                         </Tooltip>;
+
+                        const cumulativeLocal = formatNumber(item.cumulative_local);
+                        const treatmentLocal = formatNumber(item.treatment_local);
+                        const cumulativeForeign = formatNumber(item.cumulative_foreign);
+                        const treatmentForeign = formatNumber(item.treatment_foreign);
+
                         return <Col key={item.hospital_id} xs={{span: 24}} sm={{span: 11}} md={{span: 5}}
                                     style={{marginRight: '20px', marginBottom: '20px'}}>
                             <Card title={titleNode}>
                                 <div>
-                                    <span className="cumulative-local">{item.cumulative_local}</span>
-                                    <Text type="secondary" className="treatment-local">{item.treatment_local} new
+                                    <span className="cumulative-local">{cumulativeLocal}</span>
+                                    <Text type="secondary" className="treatment-local">{treatmentLocal} new
                                         cases</Text>
                                     <div>
                                         <Text type="secondary" className="cumulative-local-text">Total locals being
@@ -30,8 +37,8 @@ const HospitalPanel = ({data}) => {
                                 </div>
 
                                 <div>
-                                    <span className="cumulative-local">{item.cumulative_foreign}</span>
-                                    <Text type="secondary" className="treatment-local">{item.treatment_foreign} new
+                                    <span className="cumulative-local">{cumulativeForeign}</span>
+                                    <Text type="secondary" className="treatment-local">{treatmentForeign} new
                                         cases</Text>
                                     <div>
                                         <Text type="secondary" className="cumulative-local-text">Total foreigners being

@@ -17,6 +17,7 @@ import PanelPage from "./Pages/PanelPage/PanelPage";
 import HospitalPanel from "./Pages/HospitalPanel/HospitalPanel";
 import QAPanel from "./components/QAPanel/QAPanel";
 import CardPanel from "./components/CardPanel/CardPanel";
+import {formatNumber} from "./utils/Numbers";
 
 const {Header, Content, Footer} = Layout;
 const {Title} = Typography;
@@ -88,7 +89,8 @@ function App() {
     }
 
     const getStatusText = (value, text) => {
-        return (value !== 0 ? value : "No ") + " " + text;
+        const val = formatNumber(value);
+        return (value !== 0 ? val : "No ") + " " + text;
     };
 
     const cases = {

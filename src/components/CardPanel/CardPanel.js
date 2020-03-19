@@ -2,6 +2,7 @@ import React from 'react';
 import Moment from "react-moment";
 import {Col, Radio, Row, Typography} from "antd";
 import Card from "../Card/Card";
+import {formatNumber} from "../../utils/Numbers";
 
 const {Title} = Typography;
 
@@ -22,9 +23,10 @@ const CardPanel = ({lastUpdate, data, onChange}) => {
         <Row>
             {
                 data.map(item => {
+                    const value = formatNumber(item.value);
                     return <Col key={item.style} xs={{span: 24, offset: 0}} sm={{span: 6}}
                                 md={{span: 8, offset: 0}}>
-                        <Card title={item.text} value={item.value}
+                        <Card title={item.text} value={value}
                               newStatus={item.newText} icon={item.icon} style={item.style}/>
                     </Col>
                 })
