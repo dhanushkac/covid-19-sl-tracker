@@ -1,0 +1,15 @@
+.cumulative-local {
+    font-size: 2.5em;
+    font-weight: 600;
+}
+
+.treatment-local {
+    font-weight: 600;
+    padding-left: 10px;
+}
+
+.cumulative-local-text {
+    font-weight: 600;
+    font-size: 1.1em;
+    color: #636363 !important;
+}
