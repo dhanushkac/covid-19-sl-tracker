@@ -2,6 +2,8 @@
 
 A simple dashboard for the realtime COVID-19 patient data of the Sri Lanka.
 
+The dashboard can be viewed here [https://covid-19-sl.netlify.com/](https://covid-19-sl.netlify.com/)
+
 ## Tech Stack
 
 - [React](https://reactjs.org/)
