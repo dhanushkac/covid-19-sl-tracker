@@ -9,8 +9,10 @@ const TreatmentCount = ({cumulative, treatment, type}) => {
         <div>
             <Text type="secondary" className="cumulative-local-text">{type} Treated</Text>
         </div>
-        { treatment !== "0" && <Text type="secondary" className="treatment-local">{treatment} on treatment or
-            observation</Text> }
+        <Text type="secondary">
+            <div style={{height: '20px'}}>{treatment !== "0" &&
+            <span className="treatment-local">{treatment} on treatment or observation</span>}</div>
+        </Text>
     </div>;
 };
 
