@@ -8,7 +8,7 @@ The dashboard can be viewed here [https://covid-19-sl.netlify.com/](https://covi
 
 ## Tech Stack
 
-- [React](https://reactjs.org/)
+- [React](https://reactjs.org/):
 - [Ant Design](https://ant.design/)
 - [React Moment](https://www.npmjs.com/package/react-moment)
 
