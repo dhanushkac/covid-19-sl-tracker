@@ -1,6 +1,7 @@
 import React from 'react';
 import {Card, Col, Tooltip, Typography} from "antd";
 import {formatNumber} from "../../utils/Numbers";
+import TreatmentCount from "../TreatmentCount/TreatmentCount";
 
 const {Text} = Typography;
 
@@ -19,23 +20,8 @@ const HospitalGrid = ({data}) => {
         return <Col key={item.hospital_id} xs={{span: 24}} sm={{span: 11}} md={{span: 5}}
                     style={{marginRight: '20px', marginBottom: '20px'}}>
             <Card title={titleNode}>
-                <div>
-                    <span className="cumulative-local">{cumulativeLocal}</span>
-                    <Text type="secondary" className="treatment-local">{treatmentLocal} on treatment or
-                        observation</Text>
-                    <div>
-                        <Text type="secondary" className="cumulative-local-text">Sri Lankans</Text>
-                    </div>
-                </div>
-
-                <div style={{marginTop: '20px'}}>
-                    <span className="cumulative-local">{cumulativeForeign}</span>
-                    <Text type="secondary" className="treatment-local">{treatmentForeign} on treatment or
-                        observation</Text>
-                    <div>
-                        <Text type="secondary" className="cumulative-local-text">Foreigners</Text>
-                    </div>
-                </div>
+                <TreatmentCount type="Sri Lankans" cumulative={cumulativeLocal} treatment={treatmentLocal}/>
+                <TreatmentCount type="Foreigners" cumulative={cumulativeForeign} treatment={treatmentForeign}/>
             </Card>
         </Col>;
     })
