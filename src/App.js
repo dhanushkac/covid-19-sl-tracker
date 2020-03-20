@@ -1,6 +1,6 @@
 import React, {useEffect, useState} from 'react';
 import './App.css';
-import {BackTop, Layout, Result, Row, Spin, Typography} from 'antd';
+import {BackTop, Col, Layout, Result, Row, Spin, Typography} from 'antd';
 import {faAmbulance, faProcedures, faWalking} from '@fortawesome/free-solid-svg-icons';
 import {DEATHS, GLOBAL_RECOVERED, LOCAL_RECOVERED, NEW_CASES, NEW_DEATHS, TOTAL_CASES} from './utils/Strings';
 import PanelPage from "./Pages/PanelPage/PanelPage";
@@ -8,6 +8,9 @@ import HospitalPanel from "./Pages/HospitalPanel/HospitalPanel";
 import QAPanel from "./components/QAPanel/QAPanel";
 import CardPanel from "./components/CardPanel/CardPanel";
 import {formatNumber} from "./utils/Numbers";
+import {Area, AreaChart, CartesianGrid, Tooltip, XAxis, YAxis} from "recharts";
+import moment from 'moment';
+import useScreenDimensions from "./utils/useScreenDimensions";
 
 const {Header, Content, Footer} = Layout;
 const {Title} = Typography;
@@ -18,6 +21,7 @@ function App() {
     const [isError, setError] = useState(false);
     const [isLocal, setIsLocal] = useState(true);
     const [timer, setTimer] = useState(0);
+    const [ screenSize ] = useScreenDimensions();
     const [state, setState] = useState({
         update_date_time: "",
         local_new_cases: 0,
@@ -33,6 +37,7 @@ function App() {
         global_recovered: 0,
     });
     const [hospitalData, setHospitalData] = useState([]);
+    const [chartData, setChartData] = useState([]);
 
     useEffect(() => {
         setInterval(() => {
@@ -41,7 +46,7 @@ function App() {
     }, []);
 
     useEffect(() => {
-        fetchData()
+        fetchData();
     }, [timer]);
 
     const fetchData = async () => {
@@ -69,6 +74,15 @@ function App() {
                 global_new_deaths: data.global_new_deaths,
                 global_recovered: data.global_recovered
             });
+
+            await fetch("https://pomber.github.io/covid19/timeseries.json")
+                .then(response => response.json())
+                .then(val => {
+                    setChartData([...val["Sri Lanka"], {
+                        date: moment().format('YYYY-MM-DD'),
+                        confirmed: data.local_total_cases
+                    }]);
+                });
 
             setHospitalData([...hospitalData, ...data.hospital_data]);
             setIsLoading(false);
@@ -112,6 +126,8 @@ function App() {
 
     const data = [cases, deaths, recovered];
 
+    console.log(screenSize);
+
     return (
         <Layout className="layout">
             <BackTop/>
@@ -127,6 +143,26 @@ function App() {
                         <Row className="card-list">
                             <CardPanel cardData={data} onChange={onChange} lastUpdate={state.update_date_time}/>
                             <QAPanel/>
+                        </Row>
+                        <Row>
+                            <Col span={24}>
+                                <Title style={{ marginTop:'30px' }} level={2}>The Distribution of the COVID-19 confirmed cases</Title>
+                                <AreaChart width={screenSize.width-100} height={400} data={chartData}
+                                           margin={{top: 10, right: 30, left: 0, bottom: 0}}>
+                                    <defs>
+                                        <linearGradient id="colorUv" x1="0" y1="0" x2="0" y2="1">
+                                            <stop offset="5%" stopColor="#357ae8" stopOpacity={0.8}/>
+                                            <stop offset="95%" stopColor="#357ae8" stopOpacity={0}/>
+                                        </linearGradient>
+                                    </defs>
+                                    <XAxis dataKey="date"/>
+                                    <YAxis/>
+                                    <CartesianGrid strokeDasharray="3 3"/>
+                                    <Tooltip/>
+                                    <Area type="monotone" dataKey="confirmed"  stroke="#8884d8" fillOpacity={1}
+                                          fill="url(#colorUv)"/>
+                                </AreaChart>
+                            </Col>
                         </Row>
                         <Row>
                             <HospitalPanel hospitalData={hospitalData}
