@@ -25,3 +25,16 @@
     font-size: 0.6em;
     height: 23px;
 }
+
+
+.ant-card-head {
+    background: #d2d2d2;
+}
+
+.ant-card-bordered {
+    border: 1px solid #dadada;
+}
+
+.ant-card-body {
+    background: #f1f1f1;
+}
