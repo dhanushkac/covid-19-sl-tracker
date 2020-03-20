@@ -6,7 +6,8 @@ import {formatNumber} from "../../utils/Numbers";
 
 const {Title} = Typography;
 
-const CardPanel = ({lastUpdate, data, onChange}) => {
+const CardPanel = ({lastUpdate, cardData, onChange}) => {
+
     return <Col xs={{span: 24, offset: 0}} sm={{span: 14}} md={{span: 14}}
                 lg={{span: 14}}>
         <div className="last-sync" style={{fontWeight: '600'}}>Last updated</div>
@@ -22,7 +23,7 @@ const CardPanel = ({lastUpdate, data, onChange}) => {
         </div>
         <Row>
             {
-                data.map(item => {
+                cardData.map(item => {
                     const value = formatNumber(item.value);
                     return <Col key={item.style} xs={{span: 24, offset: 0}} sm={{span: 6}}
                                 md={{span: 8, offset: 0}}>
