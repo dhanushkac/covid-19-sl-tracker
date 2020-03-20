@@ -10,12 +10,13 @@ const {Title} = Typography;
 const HospitalPanel = ({hospitalData, admitted}) => {
 
     const [index, setIndex] = useState(1);
+    const pageSize = 4;
 
     const onchange = (val) => {
         setIndex(val);
     };
 
-    const displayData = [...hospitalData].slice((index - 1) * 8, index * 8);
+    const displayData = [...hospitalData].slice((index - 1) * pageSize, index * pageSize);
 
     return <Col>
         <div className="hospital-panel">
@@ -24,7 +25,7 @@ const HospitalPanel = ({hospitalData, admitted}) => {
                 <Message admitted={admitted}/>
             </Row>
             <Row>
-                <Pagination defaultCurrent={1} total={17} pageSize={8} onChange={onchange}/>
+                <Pagination defaultCurrent={1} total={17} pageSize={pageSize} onChange={onchange}/>
             </Row>
             <Row>
                 <Col xs={{span: 24}} sm={{span: 24}} md={{span: 20}} style={{marginTop: '25px'}}>
@@ -33,11 +34,13 @@ const HospitalPanel = ({hospitalData, admitted}) => {
                     </Row>
                 </Col>
                 <Col xs={{span: 24}} md={{span: 4}}>
-                    <TwitterTimelineEmbed
-                        sourceType="profile"
-                        screenName="WHO"
-                        options={{height: 600}}
-                    />
+                    <div style={{border: '1px solid #e6e6e6'}}>
+                        <TwitterTimelineEmbed
+                            sourceType="profile"
+                            screenName="WHO"
+                            options={{height: 400}}
+                        />
+                    </div>
                 </Col>
             </Row>
         </div>
