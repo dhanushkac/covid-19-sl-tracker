@@ -6,13 +6,14 @@
     border-radius: 15px;
     padding: 36px 10px 10px;
     width: 95%;
-    margin: auto auto 64px;
+    margin: auto auto 24px;
     color: white !important;
 }
 
 .card-title {
     margin-top: 10px;
     color: white !important;
+    height: 55px;
 }
 
 .card-status {

@@ -1,64 +1,47 @@
-import React from 'react';
-import {Card, Col, Row, Tooltip, Typography} from 'antd';
+import React, {useState} from 'react';
+import {Col, Pagination, Row, Typography} from 'antd';
 import {TwitterTimelineEmbed} from "react-twitter-embed";
-import {formatNumber} from "../../utils/Numbers";
 import './HospitalPanel.css';
+import Message from "../../components/Message/Message";
+import HospitalGrid from "../../components/HospitalGrid/HospitalGrid";
 
-const {Title, Text} = Typography;
+const {Title} = Typography;
 
-const HospitalPanel = ({data}) => {
+const HospitalPanel = ({hospitalData, admitted}) => {
 
-    return <div className="hospital-panel">
-        <Title level={2}>Current status of the hospitals</Title>
-        <Row>
-            <Col xs={{span: 24}} sm={{span: 24}} md={{span: 20}} style={{marginTop: '25px'}}>
-                <Row>
-                    {data.map(item => {
-                        const titleNode = <Tooltip placement="top" title={item.hospital.name}>
-                            <Text>{item.hospital.name}</Text>
-                        </Tooltip>;
+    const [index, setIndex] = useState(1);
 
-                        const cumulativeLocal = formatNumber(item.cumulative_local);
-                        const treatmentLocal = formatNumber(item.treatment_local);
-                        const cumulativeForeign = formatNumber(item.cumulative_foreign);
-                        const treatmentForeign = formatNumber(item.treatment_foreign);
+    const onchange = (val) => {
+        setIndex(val);
+    };
 
-                        return <Col key={item.hospital_id} xs={{span: 24}} sm={{span: 11}} md={{span: 5}}
-                                    style={{marginRight: '20px', marginBottom: '20px'}}>
-                            <Card title={titleNode}>
-                                <div>
-                                    <span className="cumulative-local">{cumulativeLocal}</span>
-                                    <Text type="secondary" className="treatment-local">{treatmentLocal} new
-                                        cases</Text>
-                                    <div>
-                                        <Text type="secondary" className="cumulative-local-text">Total locals being
-                                            tested</Text>
-                                    </div>
-                                </div>
+    const displayData = [...hospitalData].slice((index - 1) * 8, index * 8);
 
-                                <div>
-                                    <span className="cumulative-local">{cumulativeForeign}</span>
-                                    <Text type="secondary" className="treatment-local">{treatmentForeign} new
-                                        cases</Text>
-                                    <div>
-                                        <Text type="secondary" className="cumulative-local-text">Total foreigners being
-                                            tested</Text>
-                                    </div>
-                                </div>
-                            </Card>
-                        </Col>;
-                    })}
-                </Row>
-            </Col>
-            <Col xs={{span: 24}} md={{span: 4}}>
-                <TwitterTimelineEmbed
-                    sourceType="profile"
-                    screenName="WHO"
-                    options={{height: 600}}
-                />
-            </Col>
-        </Row>
-    </div>;
+    return <Col>
+        <div className="hospital-panel">
+            <Title level={2}>Current status of the hospitals - treated or observed</Title>
+            <Row>
+                <Message admitted={admitted}/>
+            </Row>
+            <Row>
+                <Pagination defaultCurrent={1} total={17} pageSize={8} onChange={onchange}/>
+            </Row>
+            <Row>
+                <Col xs={{span: 24}} sm={{span: 24}} md={{span: 20}} style={{marginTop: '25px'}}>
+                    <Row>
+                        <HospitalGrid data={displayData}/>
+                    </Row>
+                </Col>
+                <Col xs={{span: 24}} md={{span: 4}}>
+                    <TwitterTimelineEmbed
+                        sourceType="profile"
+                        screenName="WHO"
+                        options={{height: 600}}
+                    />
+                </Col>
+            </Row>
+        </div>
+    </Col>;
 };
 
 export default HospitalPanel;
