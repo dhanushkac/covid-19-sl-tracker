@@ -90,7 +90,7 @@ function App() {
                     });
 
                     setChartData([...processedChartData, {
-                        date: moment().format('YYYY-MM-DD'),
+                        date: moment().format('YYYY-M-DD'),
                         confirmed: data.local_total_cases,
                         deaths: data.local_deaths,
                         recovered: data.local_recovered
