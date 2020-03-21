@@ -8,7 +8,6 @@ import HospitalPanel from "./Pages/HospitalPanel/HospitalPanel";
 import QAPanel from "./components/QAPanel/QAPanel";
 import CardPanel from "./components/CardPanel/CardPanel";
 import {formatNumber} from "./utils/Numbers";
-import {Area, AreaChart, CartesianGrid, Tooltip, XAxis, YAxis} from "recharts";
 import moment from 'moment';
 import useScreenDimensions from "./utils/useScreenDimensions";
 import PatientChart from "./components/PatientChart/PatientChart";
