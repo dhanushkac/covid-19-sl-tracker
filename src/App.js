@@ -84,7 +84,7 @@ function App() {
                     const processedChartData = chartData.map(obj => {
                         const date = moment().format('YYYY-M-DD');
                         if (obj.recovered >= 2 && obj.date < date && obj.recovered > data.local_recovered) {
-                            return {...obj, "recovered": obj.recovered-2, "confirmed": obj.confirmed -1 };
+                            return {...obj, "confirmed": obj.confirmed -1 };
                         }
                         return obj;
                     });

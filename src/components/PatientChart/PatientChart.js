@@ -15,14 +15,6 @@ const PatientChart = ({chartData, width}) => {
                     <stop offset="5%" stopColor="#357ae8" stopOpacity={0.8}/>
                     <stop offset="95%" stopColor="#357ae8" stopOpacity={0}/>
                 </linearGradient>
-                <linearGradient id="deaths" x1="0" y1="0" x2="0" y2="1">
-                    <stop offset="5%" stopColor="#f759ab" stopOpacity={0.8}/>
-                    <stop offset="95%" stopColor="#f759ab" stopOpacity={0}/>
-                </linearGradient>
-                <linearGradient id="recovered" x1="0" y1="0" x2="0" y2="1">
-                    <stop offset="5%" stopColor="#722ed1" stopOpacity={0.8}/>
-                    <stop offset="95%" stopColor="#722ed1" stopOpacity={0}/>
-                </linearGradient>
             </defs>
             <XAxis dataKey="date"/>
             <YAxis/>
@@ -30,10 +22,6 @@ const PatientChart = ({chartData, width}) => {
             <Tooltip/>
             <Area type="monotone" dataKey="confirmed" stroke="#8884d8" fillOpacity={1}
                   fill="url(#confirmed)"/>
-            <Area type="monotone" dataKey="deaths" stroke="#8884d8" fillOpacity={1}
-                  fill="url(#deaths)"/>
-            <Area type="monotone" dataKey="recovered" stroke="#8884d8" fillOpacity={1}
-                  fill="url(#recovered)"/>
         </AreaChart>
     </div>;
 };
