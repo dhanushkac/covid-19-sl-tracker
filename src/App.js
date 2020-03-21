@@ -11,6 +11,7 @@ import {formatNumber} from "./utils/Numbers";
 import {Area, AreaChart, CartesianGrid, Tooltip, XAxis, YAxis} from "recharts";
 import moment from 'moment';
 import useScreenDimensions from "./utils/useScreenDimensions";
+import PatientChart from "./components/PatientChart/PatientChart";
 
 const {Header, Content, Footer} = Layout;
 const {Title} = Typography;
@@ -156,35 +157,7 @@ function App() {
                         </Row>
                         <Row>
                             <Col span={24}>
-                                <Title style={{marginTop: '30px'}} level={2}>The Distribution of the COVID-19 confirmed
-                                    cases</Title>
-                                <AreaChart width={screenSize.width - 100} height={400} data={chartData}
-                                           margin={{top: 10, right: 30, left: 0, bottom: 0}}>
-                                    <defs>
-                                        <linearGradient id="confirmed" x1="0" y1="0" x2="0" y2="1">
-                                            <stop offset="5%" stopColor="#357ae8" stopOpacity={0.8}/>
-                                            <stop offset="95%" stopColor="#357ae8" stopOpacity={0}/>
-                                        </linearGradient>
-                                        <linearGradient id="deaths" x1="0" y1="0" x2="0" y2="1">
-                                            <stop offset="5%" stopColor="#f759ab" stopOpacity={0.8}/>
-                                            <stop offset="95%" stopColor="#f759ab" stopOpacity={0}/>
-                                        </linearGradient>
-                                        <linearGradient id="recovered" x1="0" y1="0" x2="0" y2="1">
-                                            <stop offset="5%" stopColor="#722ed1" stopOpacity={0.8}/>
-                                            <stop offset="95%" stopColor="#722ed1" stopOpacity={0}/>
-                                        </linearGradient>
-                                    </defs>
-                                    <XAxis dataKey="date"/>
-                                    <YAxis/>
-                                    <CartesianGrid strokeDasharray="3 3"/>
-                                    <Tooltip/>
-                                    <Area type="monotone" dataKey="confirmed" stroke="#8884d8" fillOpacity={1}
-                                          fill="url(#confirmed)"/>
-                                    <Area type="monotone" dataKey="deaths" stroke="#8884d8" fillOpacity={1}
-                                          fill="url(#deaths)"/>
-                                    <Area type="monotone" dataKey="recovered" stroke="#8884d8" fillOpacity={1}
-                                          fill="url(#recovered)"/>
-                                </AreaChart>
+                                <PatientChart chartData={chartData} width={screenSize.width}/>
                             </Col>
                         </Row>
                         <Row>
