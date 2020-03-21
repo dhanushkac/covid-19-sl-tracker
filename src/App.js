@@ -89,12 +89,7 @@ function App() {
                         return obj;
                     });
 
-                    setChartData([...processedChartData, {
-                        date: moment().format('YYYY-MM-DD'),
-                        confirmed: data.local_total_cases,
-                        deaths: data.local_deaths,
-                        recovered: data.local_recovered
-                    }]);
+                    setChartData([...processedChartData]);
                 }).catch(_ => setError(true));
 
             setHospitalData([...hospitalData, ...data.hospital_data]);
