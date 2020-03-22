@@ -34,9 +34,6 @@ function App() {
   const [isAsia, setIsAsia] = useState(false);
   const [defaultCounties, setDefaultCountries] = useState(["Malaysia","Sri Lanka", "India", "Pakistan", "Singapore", "Japan"]);
   const [filteredCountries, setFilteredCountries] = useState([]);
- // const [lastUpdate, setLastUpdate] = useState(Date.now());
- // console.log(Date.now);
-  
   const [timer, setTimer] = useState(0);
   const [screenSize] = useScreenDimensions();
   const [state, setState] = useState({
