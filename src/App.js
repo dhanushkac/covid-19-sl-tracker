@@ -32,6 +32,11 @@ function App() {
   const [isError, setError] = useState(false);
   const [isLocal, setIsLocal] = useState(true);
   const [isAsia, setIsAsia] = useState(false);
+  const [defaultCounties, setDefaultCountries] = useState(["Malaysia","Sri Lanka", "India", "Pakistan", "Singapore", "Japan"]);
+  const [filteredCountries, setFilteredCountries] = useState([]);
+ // const [lastUpdate, setLastUpdate] = useState(Date.now());
+ // console.log(Date.now);
+  
   const [timer, setTimer] = useState(0);
   const [screenSize] = useScreenDimensions();
   const [state, setState] = useState({
@@ -51,6 +56,9 @@ function App() {
   const [hospitalData, setHospitalData] = useState([]);
   const [chartData, setChartData] = useState([]);
   const [asianChartData, setAsianChartData] = useState([]);
+  const [lastUpdate, setLastUpdate] = useState({
+    updateDate: ""
+  });
 
   useEffect(() => {
     setInterval(() => {
@@ -94,11 +102,43 @@ function App() {
       await fetch("https://pomber.github.io/covid19/timeseries.json")
         .then(response => response.json())
         .then(val => {
-          const countries = ASIAN_COUNTRIES;
           const chartData = [...val["Sri Lanka"]];
-          let asianData = chartData;
+          const lastUpdate = chartData[chartData.length-1].date;
+          
+          setLastUpdate({
+            ...lastUpdate,
+            updateDate: lastUpdate
+          });
+          const processedAsianData = [];
+
+          ASIAN_COUNTRIES.map(country => {
+            
+            const lastIndex = val[country].length - 1;
+            const countryData = val[country][lastIndex];
+            
+            const tempDeaths = {};
+            tempDeaths["country"] = country;
+            tempDeaths["type"] = "deaths";
+            tempDeaths["value"] = countryData.deaths;
+            processedAsianData.push(tempDeaths);
+
+            const tempRecovered = {};
+            tempRecovered["country"] = country;
+            tempRecovered["type"] = "recovered";
+            tempRecovered["value"] = countryData.recovered;
+            processedAsianData.push(tempRecovered);
+
+            const tempActive = {};
+            tempActive["country"] = country;
+            tempActive["type"] = "active";
+            tempActive["value"] = countryData.confirmed - countryData.recovered;
+            processedAsianData.push(tempActive);
+
+            return countryData;
+          });
 
           const processedChartData = chartData.map(obj => {
+            
             const date = moment().format("YYYY-M-DD");
             if (
               obj.recovered >= 2 &&
@@ -111,23 +151,7 @@ function App() {
           });
 
           setChartData([...processedChartData]);
-
-          countries.forEach(country => {
-            asianData = Object.values(
-              [...asianData, ...val[country]].reduce(
-                (acc, { date, confirmed }) => {
-                  acc[date] = {
-                    date,
-                    confirmed: (acc[date] ? acc[date].confirmed : 0) + confirmed
-                  };
-                  return acc;
-                },
-                {}
-              )
-            );
-          });
-
-          setAsianChartData([...asianData]);
+          setAsianChartData([...processedAsianData]);
         })
         .catch(_ => setError(true));
 
@@ -145,6 +169,16 @@ function App() {
 
   function onChangeChart(value) {
     setIsAsia(value.target.value);
+  }
+
+  function onChangeCountry(countries) {
+    defaultCounties.forEach(element => {
+      filteredCountries.push(element);
+    });
+    countries.forEach(element => {
+      filteredCountries.push(element);
+    });
+    setFilteredCountries([filteredCountries]);
   }
 
   const getStatusText = (value, text) => {
@@ -180,35 +214,44 @@ function App() {
   };
 
   const chartConf = {
+    title: {
+      visible: false
+    },
+    description: {
+      visible: false
+    },
+    padding: "auto",
+    forceFit: true,
+    point: {
+      visible: true,
+      size: 3
+    },
+    responsive: true,
+    smooth: true,
     chartData: isAsia ? asianChartData : chartData,
     label: {
       visible: isAsia ? true : true,
       offset: 20,
-      
-
+      type: "point"
     },
+    lineChart: isAsia ? false : true,
+    xField : isAsia ? "value" : "date",
+    yField : isAsia ? "country" : "confirmed",
+    stackField: isAsia ? 'type' : "",
+    yAxis: {
+      tickCount: isAsia ? 18 : 10
+    },
+    xAxis: {
+      tickCount: isAsia ? 10 : 10
+    },
+    height : isAsia ? 500 : 400,
 
-    /** define a slider for x-axis */ 
+    color: isAsia ?  ["#1979C9", "#32CD32", "#D62A0D"] : "#1979C9",
 
-    // interactions: [
-    //     {
-    //       type: 'slider',
-    //       cfg: {
-    //         start: isAsia ? 0.0 : 0.7,
-    //         end: 1.0
-    //       },
-    //     },
-    //   ],
+    barStyle : {
+      lineWidth : 8
+    }
 
-    /** line animation */ 
-
-    // animation: {
-    //   type: "clipingWithData"
-    // }
-
-    /** dark theme */ 
-
-    // theme: 'light',
   };
 
   const data = [cases, deaths, recovered];
@@ -244,8 +287,10 @@ function App() {
                     <PatientChart
                       chartData={chartData}
                       chartConf={chartConf}
-                      onChange={onChangeChart}
+                      countries={[defaultCounties, filteredCountries]}
+                      onChange={[onChangeChart, onChangeCountry]}
                       width={screenSize.width}
+                      lastUpdate={lastUpdate.updateDate}
                     />
                   </Col>
                 </Row>
