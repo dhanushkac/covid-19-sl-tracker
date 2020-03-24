@@ -1,5 +1,5 @@
-import React from 'react';
-import {Col, Row} from "antd";
+import React from "react";
+import { Col, Row } from "antd";
 import PatientChart from "../../components/PatientChart/PatientChart";
 import AgeChart from "../../components/AgeChart/AgeChart";
 import GenderChart from "../../components/GenderChart/GenderChart";

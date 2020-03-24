@@ -1,6 +1,6 @@
-import React from 'react';
-import {Typography} from "antd";
-import './ContactPanel.css';
+import React from "react";
+import { Typography } from "antd";
+import "./ContactPanel.css";
 
 const {Title, Text} = Typography;
 

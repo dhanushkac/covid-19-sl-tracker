@@ -1,8 +1,8 @@
-import React from 'react';
+import React from "react";
 
-import {Tooltip, Typography} from 'antd';
-import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
-import './card.css';
+import { Tooltip, Typography } from "antd";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import "./card.css";
 
 const {Title} = Typography;
 
@@ -16,7 +16,7 @@ const Card = ({title, value, icon, newStatus, style}) => {
 
             <div className="status-data">
                 {newStatus && value !== "0" &&
-                <Tooltip placement="bottom" title={newStatus.toLowerCase() + ' within past 24 hours'}>
+                <Tooltip placement="bottom" title={newStatus.toLowerCase() + " within past 24 hours"}>
                     <p className="new-status-text">{newStatus}</p>
                 </Tooltip>}
             </div>
