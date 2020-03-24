@@ -1,11 +1,11 @@
-import React from 'react';
-import {Typography} from "antd";
+import React from "react";
+import { Typography } from "antd";
 
 const {Text} = Typography;
 
 const ImageCredit = () => {
     return (
-        <div style={{marginTop: '50px'}}>
+        <div style={{marginTop: "50px"}}>
             <div>
                 <Text>Credits & Sources: <a href="http://hpb.health.gov.lk/">hpb.health.gov.lk</a> | <a
                     href="http://www.epid.gov.lk/web/">http://www.epid.gov.lk/web/</a> | <a

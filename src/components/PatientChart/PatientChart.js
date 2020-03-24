@@ -1,7 +1,7 @@
-import React from 'react';
-import {LineChart} from '@opd/g2plot-react';
+import React from "react";
+import { LineChart } from "@opd/g2plot-react";
 import LastUpdate from "../LastUpdate/LastUpdate";
-import {Col} from "antd";
+import { Col } from "antd";
 
 const PatientChart = ({data, updatedAt}) => {
 
@@ -13,16 +13,16 @@ const PatientChart = ({data, updatedAt}) => {
         description: {
             visible: false
         },
-        padding: 'auto',
+        padding: "auto",
         forceFit: true,
-        xField: 'date',
-        yField: 'confirmed',
+        xField: "date",
+        yField: "confirmed",
         label: {
             visible: false,
-            type: 'point',
+            type: "point",
         },
         style: {
-            width: '100%'
+            width: "100%"
         },
         point: {
             visible: true,
@@ -35,7 +35,7 @@ const PatientChart = ({data, updatedAt}) => {
     };
 
     return (
-        <Col span={24} style={{marginTop: '40px'}}>
+        <Col span={24} style={{marginTop: "40px"}}>
             <div className="country-data-title">The daily distribution of the COVID-19 confirmed
                 cases
             </div>

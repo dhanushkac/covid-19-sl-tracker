@@ -1,6 +1,6 @@
-import React from 'react';
-import {ColumnChart} from "@opd/g2plot-react";
-import {Col} from "antd";
+import React from "react";
+import { ColumnChart } from "@opd/g2plot-react";
+import { Col } from "antd";
 import LastUpdate from "../LastUpdate/LastUpdate";
 
 const AgeChart = ({data, updatedAt}) => {
@@ -10,30 +10,30 @@ const AgeChart = ({data, updatedAt}) => {
             visible: false
         },
         data: [...data],
-        padding: 'auto',
-        xField: 'age',
-        yField: 'count',
+        padding: "auto",
+        xField: "age",
+        yField: "count",
         yAxis: {
             visible: false
         },
-        color: '#ff8f2f',
+        color: "#ff8f2f",
         meta: {
             age: {
-                alias: 'Age Range',
+                alias: "Age Range",
             },
             count: {
                 formatter: (v) => {
-                    if (v) {
+                    if(v) {
                         return `${v}%`
                     }
-                    return '';
+                    return "";
                 }
             }
         },
         label: {
             visible: true,
             style: {
-                fill: '#0D0E68',
+                fill: "#0D0E68",
                 fontSize: 12,
                 fontWeight: 600,
                 opacity: 0.6,
@@ -45,7 +45,7 @@ const AgeChart = ({data, updatedAt}) => {
     };
 
     return (
-        <Col span={24} style={{marginTop: '40px'}}>
+        <Col span={24} style={{marginTop: "40px"}}>
             <div className="country-data-title">The age based distribution of the COVID-19 confirmed
                 cases
             </div>

@@ -1,14 +1,14 @@
-import React, {useEffect, useState} from 'react';
-import './App.css';
-import {BackTop, Layout, Result, Row, Spin, Typography} from 'antd';
-import {faAmbulance, faBed, faWalking} from '@fortawesome/free-solid-svg-icons';
-import {DEATHS, GLOBAL_RECOVERED, LOCAL_RECOVERED, NEW_CASES, NEW_DEATHS, TOTAL_CASES} from './utils/Strings';
+import React, { useEffect, useState } from "react";
+import "./App.css";
+import { BackTop, Layout, Result, Row, Spin, Typography } from "antd";
+import { faAmbulance, faBed, faWalking } from "@fortawesome/free-solid-svg-icons";
+import { DEATHS, GLOBAL_RECOVERED, LOCAL_RECOVERED, NEW_CASES, NEW_DEATHS, TOTAL_CASES } from "./utils/Strings";
 import PanelPage from "./Pages/PanelPage/PanelPage";
 import HospitalPanel from "./Pages/HospitalPanel/HospitalPanel";
 import QAPanel from "./components/QAPanel/QAPanel";
 import CardPanel from "./Pages/CardPanel/CardPanel";
-import {formatNumber} from "./utils/Numbers";
-import moment from 'moment';
+import { formatNumber } from "./utils/Numbers";
+import moment from "moment";
 import DistrictPanel from "./Pages/DistrictPanel/DistrictPanel";
 import DistrictMapPanel from "./Pages/DistrictMapPanel/DistrictMapPanel";
 import ChartPanel from "./Pages/ChartPanel/ChartPanel";
@@ -55,7 +55,7 @@ function App() {
             setIsLoading(true);
             const response = await fetch(`https://intense-anchorage-68667.herokuapp.com/status`);
 
-            if (!response.ok) {
+            if(!response.ok) {
                 throw Error(response.statusText);
             }
 
@@ -88,7 +88,7 @@ function App() {
             });
 
             setAgeChartData(chartData);
-        } catch (e) {
+        } catch(e) {
             setErrorCountryData(true);
         }
     };
@@ -96,8 +96,8 @@ function App() {
     const fetchData = async (callback) => {
         try {
             setIsLoading(true);
-            const response = await fetch('https://hpb.health.gov.lk/api/get-current-statistical');
-            if (!response.ok) {
+            const response = await fetch("https://hpb.health.gov.lk/api/get-current-statistical");
+            if(!response.ok) {
                 throw Error(response.statusText);
             }
             const json = await response.json();
@@ -126,8 +126,8 @@ function App() {
                     const sriLankaData = [...val["Sri Lanka"]];
                     const chartData = sriLankaData.map(obj => {
                         const date = moment();
-                        const objDate = moment(obj.date, 'YYYY-M-DD', true);
-                        if (obj.recovered >= 2 && objDate.isBefore(date) && obj.recovered > data.local_recovered) {
+                        const objDate = moment(obj.date, "YYYY-M-DD", true);
+                        if(obj.recovered >= 2 && objDate.isBefore(date) && obj.recovered > data.local_recovered) {
                             return {...obj, "confirmed": obj.confirmed - 1};
                         }
                         return obj;
@@ -136,7 +136,7 @@ function App() {
                     const lastItem = [...sriLankaData].splice(-1, 1);
                     const updatedAt = (lastItem && lastItem.length > 0) ? lastItem[0].date : "";
 
-                    setPatientDataUpdatedAt(moment(updatedAt, 'YYYY-M-DD', true).format('YYYY-MM-DD'));
+                    setPatientDataUpdatedAt(moment(updatedAt, "YYYY-M-DD", true).format("YYYY-MM-DD"));
                     setPatientChartData(chartData);
                 }).catch(_ => setError(true));
 
@@ -145,7 +145,7 @@ function App() {
             setError(false);
 
             callback();
-        } catch (error) {
+        } catch(error) {
             setError(true);
         }
     };

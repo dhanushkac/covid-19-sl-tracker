@@ -1,5 +1,5 @@
-import React from 'react';
-import {Col, Collapse, Typography} from "antd";
+import React from "react";
+import { Col, Collapse, Typography } from "antd";
 import Message from "../Message/Message";
 
 const {Title, Text} = Typography;
@@ -10,7 +10,7 @@ const QAPanel = () => {
         <Col xs={{span: 24, offset: 0}} sm={{span: 9, offset: 1}} md={{span: 9, offset: 1}}
              lg={{span: 9, offset: 1}}>
             <Title>Q&A on coronaviruses (COVID-19)</Title>
-            <Collapse defaultActiveKey={['']}>
+            <Collapse defaultActiveKey={[""]}>
                 <Panel header="What is a coronavirus?" key="1">
                     <p>Coronaviruses are a large family of viruses which may cause illness in animals or
                         humans. In humans, several coronaviruses are known to cause respiratory
@@ -131,10 +131,10 @@ const QAPanel = () => {
                         nose.</p>
                 </Panel>
             </Collapse>
-            <div style={{marginTop: '10px'}}><Text>For more details check <a
+            <div style={{marginTop: "10px"}}><Text>For more details check <a
                 href="https://www.who.int/news-room/q-a-detail/q-a-coronaviruses">this link.</a></Text>
             </div>
-            <div style={{marginTop: '20px'}}>
+            <div style={{marginTop: "20px"}}>
                 <Message display={true}
                          icon={true}
                          type="light"

@@ -1,30 +1,30 @@
-import React from 'react';
-import {InfoCircleFilled} from "@ant-design/icons";
+import React from "react";
+import { InfoCircleFilled } from "@ant-design/icons";
 
-const Message = ({message, style, type, icon, children}) => {
+const Message = ({message, type, icon, children}) => {
 
     let messageStyle = {
         message: {
-            background: '#357ae8',
-            padding: '10px 15px',
-            color: 'white',
-            borderRadius: '10px',
-            marginBottom: '20px',
-            minHeight: '30px'
+            background: "#357ae8",
+            padding: "10px 15px",
+            color: "white",
+            borderRadius: "10px",
+            marginBottom: "20px",
+            minHeight: "30px"
         },
 
         messageData: {
-            paddingLeft: '10px'
+            paddingLeft: "10px"
         }
     };
 
-    if (type === "light") {
+    if(type === "light") {
         messageStyle = {
             message: {
                 ...messageStyle.message,
-                background: '#f0f0f0',
-                color: 'black',
-                border: '1px solid #d9d9d9'
+                background: "#f0f0f0",
+                color: "black",
+                border: "1px solid #d9d9d9"
             },
 
             messageData: {
@@ -36,7 +36,7 @@ const Message = ({message, style, type, icon, children}) => {
     return (
         <div style={messageStyle.message}>
             {
-                message ? <div style={{fontSize: '1.2em'}}>
+                message ? <div style={{fontSize: "1.2em"}}>
                     {icon && <InfoCircleFilled/>}
                     <span style={messageStyle.messageData}>{message}</span>
                 </div> : <div>{children}</div>
