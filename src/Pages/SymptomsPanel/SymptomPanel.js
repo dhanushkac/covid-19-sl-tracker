@@ -12,29 +12,29 @@ const SymptomPanel = () => {
                 needing special treatment.</Text>
             <div>
                 <Row>
-                    <Col style={{textAlign: 'center', marginTop: '30px'}} xs={{span: 24}} sm={{span: 24}} md={{span: 8}}
+                    <Col style={{textAlign: 'center', marginTop: '30px'}} xs={{span: 16, offset: 4}} sm={{span: 24}} md={{span: 7, offset: 1}}
                          lg={{span: 6}}>
-                        <img src="http://hpb.health.gov.lk/media/feature/1.png" alt=""/>
+                        <img src="http://hpb.health.gov.lk/media/feature/1.png" alt="" style={{width: '100%'}}/>
                         <Title level={3}>Fever</Title>
                     </Col>
-                    <Col style={{textAlign: 'center', marginTop: '30px'}} xs={{span: 24}} sm={{span: 24}} md={{span: 8}}
+                    <Col style={{textAlign: 'center', marginTop: '30px'}} xs={{span: 16, offset: 4}} sm={{span: 24}} md={{span: 7, offset: 1}}
                          lg={{span: 6}}>
-                        <img src="http://hpb.health.gov.lk/media/feature/2.png" alt=""/>
+                        <img src="http://hpb.health.gov.lk/media/feature/2.png" alt="" style={{width: '100%'}}/>
                         <Title level={3}>Cough and sneezes</Title>
                     </Col>
-                    <Col style={{textAlign: 'center', marginTop: '30px'}} xs={{span: 24}} sm={{span: 24}} md={{span: 8}}
+                    <Col style={{textAlign: 'center', marginTop: '30px'}} xs={{span: 16, offset: 4}} sm={{span: 24}} md={{span: 7, offset: 1}}
                          lg={{span: 6}}>
-                        <img src="http://hpb.health.gov.lk/media/feature/3.png" alt=""/>
+                        <img src="http://hpb.health.gov.lk/media/feature/3.png" alt="" style={{width: '100%'}}/>
                         <Title level={3}>Sore throat</Title>
                     </Col>
-                    <Col style={{textAlign: 'center', marginTop: '30px'}} xs={{span: 24}} sm={{span: 24}} md={{span: 8}}
+                    <Col style={{textAlign: 'center', marginTop: '30px'}} xs={{span: 16, offset: 4}} sm={{span: 24}} md={{span: 7, offset: 1}}
                          lg={{span: 6}}>
-                        <img src="http://hpb.health.gov.lk/media/feature/4.png" alt=""/>
+                        <img src="http://hpb.health.gov.lk/media/feature/4.png" alt="" style={{width: '100%'}}/>
                         <Title level={3}>Sneezing and runny nose</Title>
                     </Col>
-                    <Col style={{textAlign: 'center', marginTop: '30px'}} xs={{span: 24}} sm={{span: 24}} md={{span: 8}}
+                    <Col style={{textAlign: 'center', marginTop: '30px'}} xs={{span: 16, offset: 4}} sm={{span: 24}} md={{span: 7, offset: 1}}
                          lg={{span: 6}}>
-                        <img src="http://hpb.health.gov.lk/media/feature/9.png" alt=""/>
+                        <img src="http://hpb.health.gov.lk/media/feature/9.png" alt="" style={{width: '100%'}}/>
                         <Title level={3}>Difficulty in breathing</Title>
                     </Col>
                 </Row>
