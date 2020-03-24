@@ -1,30 +1,49 @@
-import React from 'react';
-import {Card, Col, Tooltip, Typography} from "antd";
+import React, {useState} from 'react';
+import {Card, Col, Pagination, Row, Tooltip, Typography} from "antd";
 import {formatNumber} from "../../utils/Numbers";
 import TreatmentCount from "../TreatmentCount/TreatmentCount";
 
 const {Text} = Typography;
 
 const HospitalGrid = ({data}) => {
-    return data && data.map(item => {
-        const name = (item.hospital.name).replace(/^TH/g, "Teaching Hospital");
-        const titleNode = <Tooltip placement="bottom" title={name}>
-            <Text>{name}</Text>
-        </Tooltip>;
 
-        const cumulativeLocal = formatNumber(item.cumulative_local);
-        const treatmentLocal = formatNumber(item.treatment_local);
-        const cumulativeForeign = formatNumber(item.cumulative_foreign);
-        const treatmentForeign = formatNumber(item.treatment_foreign);
+    const [index, setIndex] = useState(1);
+    const pageSize = 4;
 
-        return <Col key={item.hospital_id} xs={{span: 24}} sm={{span: 11}} md={{span: 5}}
-                    style={{marginRight: '20px', marginBottom: '20px'}}>
-            <Card title={titleNode}>
-                <TreatmentCount type="Sri Lankans" cumulative={cumulativeLocal} treatment={treatmentLocal}/>
-                <TreatmentCount type="Foreigners" cumulative={cumulativeForeign} treatment={treatmentForeign}/>
-            </Card>
-        </Col>;
-    })
+    const onchange = (val) => {
+        setIndex(val);
+    };
+
+    const displayData = [...data].slice((index - 1) * pageSize, index * pageSize);
+
+    return (
+        <Col xs={{span: 24}} sm={{span: 24}} md={{span: 20}} style={{marginTop: '25px'}}>
+            <Pagination defaultCurrent={1} total={17} pageSize={pageSize} onChange={onchange}
+                        style={{marginBottom: '10px'}}/>
+            <Row>
+                {displayData && displayData.map(item => {
+                    const name = (item.hospital.name).replace(/^TH/g, "Teaching Hospital");
+                    const titleNode = <Tooltip placement="bottom" title={name}>
+                        <Text>{name}</Text>
+                    </Tooltip>;
+
+                    const cumulativeLocal = formatNumber(item.cumulative_local);
+                    const treatmentLocal = formatNumber(item.treatment_local);
+                    const cumulativeForeign = formatNumber(item.cumulative_foreign);
+                    const treatmentForeign = formatNumber(item.treatment_foreign);
+
+                    return <Col key={item.hospital_id} xs={{span: 24}} sm={{span: 24}} md={{span: 5}}
+                                style={{marginRight: '20px', marginBottom: '20px'}}>
+                        <Card title={titleNode}>
+                            <TreatmentCount type="Sri Lankans" cumulative={cumulativeLocal} treatment={treatmentLocal}/>
+                            <TreatmentCount type="Foreigners" cumulative={cumulativeForeign}
+                                            treatment={treatmentForeign}/>
+                        </Card>
+                    </Col>;
+                })}
+            </Row>
+        </Col>
+    );
 };
 
 export default HospitalGrid;

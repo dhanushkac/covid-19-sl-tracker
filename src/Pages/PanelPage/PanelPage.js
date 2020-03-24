@@ -1,10 +1,10 @@
 import React from 'react';
 import {Col, Row} from 'antd';
 import './PanelPage.css';
-import ContactPanel from "../../components/ContactPanel/ContactPanel";
+import ContactPanel from "../ContactPanel/ContactPanel";
 import CreditPanel from "../../components/ImageCredit/ImageCredit";
-import SpreadPreventPanel from "../../components/SpreadPreventPanel/SpreadPreventPanel";
-import SymptomPanel from "../../components/SymptomsPanel/SymptomPanel";
+import SpreadPreventPanel from "../SpreadPreventPanel/SpreadPreventPanel";
+import SymptomPanel from "../SymptomsPanel/SymptomPanel";
 
 const PanelPage = () => {
     return (

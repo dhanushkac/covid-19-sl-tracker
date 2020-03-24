@@ -1,15 +1,12 @@
 import React from 'react';
-import {Typography} from "antd";
-import { LineChart } from '@opd/g2plot-react';
+import {LineChart} from '@opd/g2plot-react';
+import LastUpdate from "../LastUpdate/LastUpdate";
+import {Col} from "antd";
 
-const {Title} = Typography;
-
-const PatientChart = ({chartData, width}) => {
+const PatientChart = ({data, updatedAt}) => {
 
     const config = {
         height: 400,
-        width: width,
-
         title: {
             visible: false
         },
@@ -21,8 +18,11 @@ const PatientChart = ({chartData, width}) => {
         xField: 'date',
         yField: 'confirmed',
         label: {
-            visible: true,
+            visible: false,
             type: 'point',
+        },
+        style: {
+            width: '100%'
         },
         point: {
             visible: true,
@@ -31,14 +31,18 @@ const PatientChart = ({chartData, width}) => {
         xAxis: {
             tickCount: 10,
         },
-        data: [...chartData],
+        data,
     };
 
-    return <div style={{marginTop: '40px'}}>
-        <Title level={2}>The Distribution of the COVID-19 confirmed
-            cases</Title>
-        <LineChart {...config} />
-    </div>;
+    return (
+        <Col span={24} style={{marginTop: '40px'}}>
+            <div className="country-data-title">The daily distribution of the COVID-19 confirmed
+                cases
+            </div>
+            <LastUpdate updated={updatedAt}/>
+            <LineChart {...config} />
+        </Col>
+    );
 };
 
 export default PatientChart;

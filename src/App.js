@@ -1,27 +1,27 @@
 import React, {useEffect, useState} from 'react';
 import './App.css';
-import {BackTop, Col, Layout, Result, Row, Spin, Typography} from 'antd';
-import {faAmbulance, faProcedures, faWalking} from '@fortawesome/free-solid-svg-icons';
+import {BackTop, Layout, Result, Row, Spin, Typography} from 'antd';
+import {faAmbulance, faBed, faWalking} from '@fortawesome/free-solid-svg-icons';
 import {DEATHS, GLOBAL_RECOVERED, LOCAL_RECOVERED, NEW_CASES, NEW_DEATHS, TOTAL_CASES} from './utils/Strings';
 import PanelPage from "./Pages/PanelPage/PanelPage";
 import HospitalPanel from "./Pages/HospitalPanel/HospitalPanel";
 import QAPanel from "./components/QAPanel/QAPanel";
-import CardPanel from "./components/CardPanel/CardPanel";
+import CardPanel from "./Pages/CardPanel/CardPanel";
 import {formatNumber} from "./utils/Numbers";
 import moment from 'moment';
-import useScreenDimensions from "./utils/useScreenDimensions";
-import PatientChart from "./components/PatientChart/PatientChart";
+import DistrictPanel from "./Pages/DistrictPanel/DistrictPanel";
+import DistrictMapPanel from "./Pages/DistrictMapPanel/DistrictMapPanel";
+import ChartPanel from "./Pages/ChartPanel/ChartPanel";
 
 const {Header, Content, Footer} = Layout;
-const {Title} = Typography;
+const {Title, Text} = Typography;
 
 function App() {
 
     const [isLoading, setIsLoading] = useState(false);
     const [isError, setError] = useState(false);
+    const [isErrorCountryData, setErrorCountryData] = useState(false);
     const [isLocal, setIsLocal] = useState(true);
-    const [timer, setTimer] = useState(0);
-    const [screenSize] = useScreenDimensions();
     const [state, setState] = useState({
         update_date_time: "",
         local_new_cases: 0,
@@ -37,19 +37,63 @@ function App() {
         global_recovered: 0,
     });
     const [hospitalData, setHospitalData] = useState([]);
-    const [chartData, setChartData] = useState([]);
+    const [patientChartData, setPatientChartData] = useState([]);
+    const [districtData, setDistrictData] = useState([]);
+    const [otherData, setOtherData] = useState({});
+    const [countryDataUpdatedDate, setCountryDataUpdatedDate] = useState("");
+    const [byGenderData, setByGenderData] = useState([]);
+    const [countriesReported, setCountriesReported] = useState(0);
+    const [ageChartData, setAgeChartData] = useState([]);
+    const [patientDataUpdatedAt, setPatientDataUpdatedAt] = useState("");
 
     useEffect(() => {
-        setInterval(() => {
-            setTimer((prevTemp) => prevTemp + 1)
-        }, 300000)
+        fetchData(fetchCountryData);
     }, []);
 
-    useEffect(() => {
-        fetchData();
-    }, [timer]);
+    const fetchCountryData = async () => {
+        try {
+            setIsLoading(true);
+            const response = await fetch(`http://localhost:3200/status`);
 
-    const fetchData = async () => {
+            if (!response.ok) {
+                throw Error(response.statusText);
+            }
+
+            const json = await response.json();
+            const data = json.data;
+
+            setDistrictData(data.district_data);
+            setOtherData(data.other_data);
+            setCountryDataUpdatedDate(data.updated_at.replace(/.00/, " ").toUpperCase());
+
+            const genderData = Object.entries(data.by_gender).map(value => {
+                return {
+                    type: value[0],
+                    value: value[1]
+                }
+            });
+
+            setByGenderData(genderData);
+            setCountriesReported(data.countries_reported);
+            setIsLoading(false);
+            setErrorCountryData(false);
+
+            const chartData = data.by_age.map(ageData => {
+                const age = Object.keys(ageData)[0];
+                const count = ageData[age];
+                return {
+                    age: age,
+                    count: +count
+                }
+            });
+
+            setAgeChartData(chartData);
+        } catch (e) {
+            setErrorCountryData(true);
+        }
+    };
+
+    const fetchData = async (callback) => {
         try {
             setIsLoading(true);
             const response = await fetch('https://hpb.health.gov.lk/api/get-current-statistical');
@@ -79,21 +123,28 @@ function App() {
                 .then(response => response.json())
                 .then(val => {
 
-                    const chartData = [...val["Sri Lanka"]];
-                    const processedChartData = chartData.map(obj => {
-                        const date = moment().format('YYYY-M-DD');
-                        if (obj.recovered >= 2 && obj.date < date && obj.recovered > data.local_recovered) {
-                            return {...obj, "confirmed": obj.confirmed -1 };
+                    const sriLankaData = [...val["Sri Lanka"]];
+                    const chartData = sriLankaData.map(obj => {
+                        const date = moment();
+                        const objDate = moment(obj.date, 'YYYY-M-DD', true);
+                        if (obj.recovered >= 2 && objDate.isBefore(date) && obj.recovered > data.local_recovered) {
+                            return {...obj, "confirmed": obj.confirmed - 1};
                         }
                         return obj;
                     });
 
-                    setChartData([...processedChartData]);
+                    const lastItem = [...sriLankaData].splice(-1, 1);
+                    const updatedAt = (lastItem && lastItem.length > 0) ? lastItem[0].date : "";
+
+                    setPatientDataUpdatedAt(moment(updatedAt, 'YYYY-M-DD', true).format('YYYY-MM-DD'));
+                    setPatientChartData(chartData);
                 }).catch(_ => setError(true));
 
             setHospitalData([...hospitalData, ...data.hospital_data]);
             setIsLoading(false);
             setError(false);
+
+            callback();
         } catch (error) {
             setError(true);
         }
@@ -120,7 +171,7 @@ function App() {
         text: DEATHS,
         value: isLocal ? state.local_deaths : state.global_deaths,
         newText: isLocal ? getStatusText(state.local_new_deaths, NEW_DEATHS) : getStatusText(state.global_new_deaths, NEW_DEATHS),
-        icon: faProcedures,
+        icon: faBed,
         style: "#ff8f2f"
     };
 
@@ -131,7 +182,12 @@ function App() {
         style: "#52c41a"
     };
 
-    const data = [cases, deaths, recovered];
+    const data = {
+        main: [cases, deaths, recovered],
+        inHospital: state.local_total_number_of_individuals_in_hospitals,
+        countries: countriesReported,
+        other: otherData
+    };
 
     return (
         <Layout className="layout">
@@ -149,14 +205,25 @@ function App() {
                             <CardPanel cardData={data} onChange={onChange} lastUpdate={state.update_date_time}/>
                             <QAPanel/>
                         </Row>
-                        <Row>
-                            <Col span={24}>
-                                <PatientChart chartData={chartData} width={screenSize.width}/>
-                            </Col>
-                        </Row>
+                        {!isErrorCountryData && <div>
+                            <Row justify="space-around">
+                                <ChartPanel ageChartData={ageChartData} patientChartData={patientChartData}
+                                            hospitalData={hospitalData}
+                                            patientDataUpdatedAt={patientDataUpdatedAt}
+                                            ageDataUpdatedAt={countryDataUpdatedDate} genderChartData={byGenderData}/>
+                                <DistrictMapPanel districtData={districtData} updatedDate={countryDataUpdatedDate}/>
+                            </Row>
+                            <Row>
+                                <DistrictPanel districtData={districtData} updatedDate={countryDataUpdatedDate}/>
+                            </Row>
+                        </div>}
+                        {isErrorCountryData && <Row>
+                            <Text>Unable to display country based analysis at this moment.</Text>
+                        </Row>}
                         <Row>
                             <HospitalPanel hospitalData={hospitalData}
-                                           admitted={state.local_total_number_of_individuals_in_hospitals}/>
+                                           admitted={state.local_total_number_of_individuals_in_hospitals}
+                                           lastUpdatedAt={state.update_date_time}/>
                         </Row>
                         <Row>
                             <PanelPage/>
