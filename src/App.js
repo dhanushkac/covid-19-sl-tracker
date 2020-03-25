@@ -239,8 +239,7 @@ function App() {
 
             </Content>
             {!isLoading && <Footer className="footer">
-                Made with ❤ by <a href="https://dhanushka.dev/">Dhanushka</a> | Powered by <a
-                href="http://hpb.health.gov.lk/api-documentation">hpb.health.gov.lk</a>
+                Made with ❤ by <a href="https://dhanushka.dev/">Dhanushka</a>
             </Footer>}
         </Layout>
     );
