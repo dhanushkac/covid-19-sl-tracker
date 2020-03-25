@@ -46,65 +46,59 @@ function App() {
     const [countriesReported, setCountriesReported] = useState(0);
     const [ageChartData, setAgeChartData] = useState([]);
     const [patientDataUpdatedAt, setPatientDataUpdatedAt] = useState("");
-    
     const [isAsia, setIsAsia] = useState(false);
     const [defaultCounties] = useState(["Malaysia","Sri Lanka", "India", "Pakistan", "Singapore", "Japan"]);
     const [filteredCountries, setFilteredCountries] = useState([]);
     const [asianChartData, setAsianChartData] = useState([]);
 
-    // useEffect(() => {
-    //     fetchData(fetchCountryData);
-    // }, []);
-
     useEffect(() => {
-      fetchData();
+        fetchData(fetchCountryData);
     }, []);
-  
 
-    // const fetchCountryData = async () => {
-    //     try {
-    //         setIsLoading(true);
-    //         const response = await fetch(`https://intense-anchorage-68667.herokuapp.com/status`);
+    const fetchCountryData = async () => {
+        try {
+            setIsLoading(true);
+            const response = await fetch(`https://intense-anchorage-68667.herokuapp.com/status`);
 
-    //         if(!response.ok) {
-    //             throw Error(response.statusText);
-    //         }
+            if(!response.ok) {
+                throw Error(response.statusText);
+            }
 
-    //         const json = await response.json();
-    //         const data = json.data;
+            const json = await response.json();
+            const data = json.data;
 
-    //         setDistrictData(data.district_data);
-    //         setOtherData(data.other_data);
-    //         setCountryDataUpdatedDate(data.updated_at.replace(/.00/, " ").toUpperCase());
+            setDistrictData(data.district_data);
+            setOtherData(data.other_data);
+            setCountryDataUpdatedDate(data.updated_at.replace(/.00/, " ").toUpperCase());
 
-    //         const genderData = Object.entries(data.by_gender).map(value => {
-    //             return {
-    //                 type: value[0],
-    //                 value: value[1]
-    //             }
-    //         });
+            const genderData = Object.entries(data.by_gender).map(value => {
+                return {
+                    type: value[0],
+                    value: value[1]
+                }
+            });
 
-    //         setByGenderData(genderData);
-    //         setCountriesReported(data.countries_reported);
-    //         setIsLoading(false);
-    //         setErrorCountryData(false);
+            setByGenderData(genderData);
+            setCountriesReported(data.countries_reported);
+            setIsLoading(false);
+            setErrorCountryData(false);
 
-    //         const chartData = data.by_age.map(ageData => {
-    //             const age = Object.keys(ageData)[0];
-    //             const count = ageData[age];
-    //             return {
-    //                 age: age,
-    //                 count: +count
-    //             }
-    //         });
+            const chartData = data.by_age.map(ageData => {
+                const age = Object.keys(ageData)[0];
+                const count = ageData[age];
+                return {
+                    age: age,
+                    count: +count
+                }
+            });
 
-    //         setAgeChartData(chartData);
-    //     } catch(e) {
-    //         setErrorCountryData(true);
-    //     }
-    // };
+            setAgeChartData(chartData);
+        } catch(e) {
+            setErrorCountryData(true);
+        }
+    };
 
-    const fetchData = async () => {  // async (callback) =>
+    const fetchData = async (callback) => {
         try {
             setIsLoading(true);
             const response = await fetch("https://hpb.health.gov.lk/api/get-current-statistical");
@@ -167,6 +161,7 @@ function App() {
                     });
 
                     setAsianChartData([...processedAsianData]);
+                    callback();
 
                 }).catch(_ => setError(true));
 
