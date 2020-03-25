@@ -9,7 +9,7 @@ const ChartPanel = ({patientChartData, ageChartData, patientDataUpdatedAt, ageDa
     return (
         <Col xs={{span: 24}} sm={{span: 24}} md={{span: 15}}>
             <Row>
-                <PatientChart data={patientChartData} updatedAt={patientDataUpdatedAt}/>
+                <PatientChart data={patientChartData} updatedAt={patientDataUpdatedAt} />
                 <Col span={24}>
                     <Row>
                         <Col xs={{span: 24}} sm={{span: 24}} md={{span: 12}}>
