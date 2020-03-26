@@ -58,7 +58,7 @@ function App() {
     const fetchCountryData = async () => {
         try {
             setIsLoading(true);
-            const response = await fetch(`http://localhost:3200/status`);
+            const response = await fetch(`https://intense-anchorage-68667.herokuapp.com/status`);
 
             if(!response.ok) {
                 throw Error(response.statusText);
