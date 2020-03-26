@@ -12,7 +12,7 @@ import moment from "moment";
 import DistrictPanel from "./Pages/DistrictPanel/DistrictPanel";
 import DistrictMapPanel from "./Pages/DistrictMapPanel/DistrictMapPanel";
 import ChartPanel from "./Pages/ChartPanel/ChartPanel";
-import { ASIAN_COUNTRIES } from "./utils/AsianCountries";
+import ASIAN_COUNTRIES from "./utils/AsianCountries";
 
 const {Header, Content, Footer} = Layout;
 const {Title, Text} = Typography;
@@ -47,7 +47,7 @@ function App() {
     const [ageChartData, setAgeChartData] = useState([]);
     const [patientDataUpdatedAt, setPatientDataUpdatedAt] = useState("");
     const [isAsia, setIsAsia] = useState(false);
-    const [defaultCounties] = useState(["Malaysia","Sri Lanka", "India", "Pakistan", "Singapore", "Japan"]);
+    const [defaultCounties] = useState(["Malaysia", "Sri Lanka", "India", "Pakistan", "Singapore", "Japan"]);
     const [filteredCountries, setFilteredCountries] = useState([]);
     const [asianChartData, setAsianChartData] = useState([]);
 
@@ -58,7 +58,7 @@ function App() {
     const fetchCountryData = async () => {
         try {
             setIsLoading(true);
-            const response = await fetch(`https://intense-anchorage-68667.herokuapp.com/status`);
+            const response = await fetch(`http://localhost:3200/status`);
 
             if(!response.ok) {
                 throw Error(response.statusText);
@@ -143,11 +143,11 @@ function App() {
 
                     setPatientDataUpdatedAt(moment(updatedAt, "YYYY-M-DD", true).format("YYYY-MM-DD"));
                     setPatientChartData(chartData);
-                    
+
                     const processedAsianData = [];
 
                     ASIAN_COUNTRIES.map(country => {
-                        
+
                         const lastIndex = val[country].length - 1;
                         const countryData = val[country][lastIndex];
 
@@ -156,7 +156,7 @@ function App() {
                         tempActive["type"] = "Confirmed cases";
                         tempActive["value"] = countryData.confirmed;
                         processedAsianData.push(tempActive);
-                        
+
                         return countryData;
                     });
 
@@ -184,17 +184,17 @@ function App() {
 
     function onChangeChart(value) {
         setIsAsia(value.target.value);
-      }
-    
-      function onChangeCountry(countries) {
+    }
+
+    function onChangeCountry(countries) {
         defaultCounties.forEach(element => {
-          filteredCountries.push(element);
+            filteredCountries.push(element);
         });
         countries.forEach(element => {
-          filteredCountries.push(element);
+            filteredCountries.push(element);
         });
         setFilteredCountries([filteredCountries]);
-      }
+    }
 
     const cases = {
         text: TOTAL_CASES,
@@ -227,46 +227,45 @@ function App() {
     };
 
     const patientChartConf = {
-        config : {
+        config: {
             title: {
                 visible: false
-              },
-              description: {
+            },
+            description: {
                 visible: false
-              },
-              padding: "auto",
-              forceFit: true,
-              point: {
+            },
+            padding: "auto",
+            forceFit: true,
+            point: {
                 visible: true,
-                size: 3
-              },
-              responsive: true,
-              smooth: true,
-              chartData: isAsia ? asianChartData : patientChartData,
-              label: {
+                size: 4
+            },
+            responsive: true,
+            smooth: true,
+            chartData: isAsia ? asianChartData : patientChartData,
+            label: {
                 visible: isAsia ? true : true,
                 offset: 20,
                 type: "point"
-              },
-              lineChart: isAsia ? false : true,
-              xField : isAsia ? "value" : "date",
-              yField : isAsia ? "country" : "confirmed",
-              stackField: isAsia ? 'type' : "",
-              yAxis: {
+            },
+            lineChart: !isAsia,
+            xField: isAsia ? "value" : "date",
+            yField: isAsia ? "country" : "confirmed",
+            stackField: isAsia ? "type" : "",
+            yAxis: {
                 tickCount: isAsia ? 18 : 10
-              },
-              xAxis: {
+            },
+            xAxis: {
                 tickCount: isAsia ? 10 : 10
-              },
-              height : isAsia ? 500 : 400,
-              color: "#1979C9",
-              style: {
+            },
+            height: isAsia ? 500 : 400,
+            style: {
                 width: "100%"
             }
         },
-        countries : [defaultCounties, filteredCountries],
-        onChange : [onChangeChart, onChangeCountry]
-      };
+        countries: [defaultCounties, filteredCountries],
+        onChange: [onChangeChart, onChangeCountry]
+    };
 
     return (
         <Layout className="layout">

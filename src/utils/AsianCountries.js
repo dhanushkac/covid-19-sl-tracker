@@ -1,4 +1,4 @@
-export const ASIAN_COUNTRIES = [
+const ASIAN_COUNTRIES = [
     "Afghanistan",
     "Bangladesh",
     "Bhutan",
@@ -18,5 +18,6 @@ export const ASIAN_COUNTRIES = [
     "Thailand",
     "United Arab Emirates",
     "Vietnam"
-  ];
-  
+];
+
+export default ASIAN_COUNTRIES;
