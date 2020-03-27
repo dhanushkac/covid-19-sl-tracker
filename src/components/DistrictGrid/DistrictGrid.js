@@ -38,15 +38,15 @@ const DistrictGrid = ({data}) => {
     });
 
     const provincialData = {
-        "Western": western,
-        "Central": central,
-        "Southern": southern,
-        "North Western": northWestern,
-        "Sabaragamuwa": sabaragamuwa,
-        "North Central": northCentral,
-        "Uva": uva,
-        "Eastern": eastern,
-        "Northern": northern,
+        "Western Province": western,
+        "Central Province": central,
+        "Southern Province": southern,
+        "North Western Province": northWestern,
+        "Sabaragamuwa Province": sabaragamuwa,
+        "North Central Province": northCentral,
+        "Uva Province": uva,
+        "Eastern Province": eastern,
+        "Northern Province": northern,
     };
 
     return (
@@ -55,20 +55,20 @@ const DistrictGrid = ({data}) => {
                 {
                     Object.entries(provincialData).map(value => {
                         return <Col className="province" key={value[0]} xs={{span: 24}} sm={{span: 24}}
-                                    md={{span: 8}}>
+                                    md={{span: 12}} lg={{span: 12}} xl={{span: 8}}>
                             <div className="district-list">
                                 <div className="province-title">
                                     <span>{value[0]}</span>
                                 </div>
                                 <Row>
-                                    {value[1].map(data => <Col className="district-item" key={data.name} span={8}>
+                                    {value[1].map(data => <Col className="district-item" key={data.name} xs={{ span: 12 }} span={8}>
                                         <div
                                             className={`district-card ${data.patient_count === 0 ? " opacity" : ""}`}>
                                             <div className="district-name">
                                                 {data.name.replace(/\b\w/, v => v.toUpperCase())}
                                             </div>
                                             <div className="district-value">
-                                                <div className="district-value" level={1}>{data.patient_count}</div>
+                                                <div className="district-value">{data.patient_count}</div>
                                             </div>
                                         </div>
                                     </Col>)}

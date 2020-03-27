@@ -62,9 +62,13 @@ function App() {
             const json = await response.json();
             const data = json.data;
 
+            const dateTime = data.updated_at.split(" – ");
+            const formattedDate = dateTime[0].replace(/\./g, "-");
+            const formattedTime = dateTime[1].replace(".", ":").replace("am", " AM").replace("pm", " PM");
+
             setDistrictData(data.district_data);
             setOtherData(data.other_data);
-            setCountryDataUpdatedDate(data.updated_at.replace(/.00/, " ").toUpperCase());
+            setCountryDataUpdatedDate(formattedDate + " " + formattedTime);
 
             const genderData = Object.entries(data.by_gender).map(value => {
                 return {
@@ -103,9 +107,11 @@ function App() {
             const json = await response.json();
             const data = json.data;
 
+            const formattedDate = moment(data.update_date_time, "YYYY-MM-DD HH:mm:ss", true).format("DD-MM-YYYY hh:mm A");
+
             setState({
                 ...state,
-                update_date_time: data.update_date_time,
+                update_date_time: formattedDate,
                 local_new_cases: data.local_new_cases,
                 local_total_cases: data.local_total_cases,
                 local_deaths: data.local_deaths,
@@ -130,13 +136,14 @@ function App() {
                         if(obj.recovered >= 2 && objDate.isBefore(date) && obj.recovered > data.local_recovered) {
                             return {...obj, "confirmed": obj.confirmed - 1};
                         }
-                        return obj;
+                        const formattedDate = objDate.format("DD-MM");
+                        return {...obj, date: formattedDate};
                     });
 
                     const lastItem = [...sriLankaData].splice(-1, 1);
                     const updatedAt = (lastItem && lastItem.length > 0) ? lastItem[0].date : "";
-
-                    setPatientDataUpdatedAt(moment(updatedAt, "YYYY-M-DD", true).format("YYYY-MM-DD"));
+                    const formattedUpdatedAt = moment(updatedAt, "YYYY-M-DD", true).format("DD-MM-YYYY hh:mm A");
+                    setPatientDataUpdatedAt(formattedUpdatedAt);
                     setPatientChartData(chartData);
                 }).catch(_ => setError(true));
 
@@ -202,11 +209,11 @@ function App() {
                 {!isLoading && <div>
                     {!isError && <div>
                         <Row className="card-list">
-                            <CardPanel cardData={data} onChange={onChange} lastUpdate={state.update_date_time}/>
+                            <CardPanel cardData={data} onChange={onChange} lastUpdate={state.update_date_time} isLocal={isLocal}/>
                             <QAPanel/>
                         </Row>
                         {!isErrorCountryData && <div>
-                            <Row justify="space-around">
+                            <Row justify="space-between">
                                 <ChartPanel ageChartData={ageChartData} patientChartData={patientChartData}
                                             hospitalData={hospitalData}
                                             patientDataUpdatedAt={patientDataUpdatedAt}
@@ -238,9 +245,7 @@ function App() {
                 </div>}
 
             </Content>
-            {!isLoading && <Footer className="footer">
-                Made with ❤ by <a href="https://dhanushka.dev/">Dhanushka</a> | Powered by <a
-                href="http://hpb.health.gov.lk/api-documentation">hpb.health.gov.lk</a>
+            {!isLoading && <Footer className="footer">Made with ❤ by <a href="https://dhanushka.dev/">Dhanushka</a>
             </Footer>}
         </Layout>
     );

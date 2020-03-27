@@ -2,24 +2,27 @@ import React from "react";
 import { Typography } from "antd";
 import "./ContactPanel.css";
 
-const {Title, Text} = Typography;
+const {Text} = Typography;
 
 const ContactPanel = () => {
     return (
         <div className="important-contacts">
-            <Title>Other Important Contacts</Title>
-            <div className="contacts">
-                <div>
-                    <Text>Suwasariya Hotline: +9471 010 7107</Text>
+            <div>
+                <div className="contact-item">
+                    <Text>Suwasariya Hotline</Text>
+                    <div className="contacts">071 010 7107</div>
                 </div>
-                <div>
-                    <Text>Epidemiology Unit: +94011 269 5112</Text>
+                <div className="contact-item">
+                    <Text>Epidemiology Unit</Text>
+                    <div className="contacts">011 269 5112</div>
                 </div>
-                <div>
-                    <Text>Quarantine Unit: +94011 211 2705</Text>
+                <div className="contact-item">
+                    <Text>Quarantine Unit</Text>
+                    <div className="contacts">011 211 2705</div>
                 </div>
-                <div>
-                    <Text>Disaster Management Unit: +94011 307 1073</Text>
+                <div className="contact-item">
+                    <Text>Disaster Management Unit</Text>
+                    <div className="contacts">011 307 1073</div>
                 </div>
             </div>
         </div>

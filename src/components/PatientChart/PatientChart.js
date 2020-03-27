@@ -28,9 +28,6 @@ const PatientChart = ({data, updatedAt}) => {
             visible: true,
             size: 5,
         },
-        xAxis: {
-            tickCount: 10,
-        },
         data,
     };
 

@@ -7,8 +7,8 @@ const {Panel} = Collapse;
 
 const QAPanel = () => {
     return (
-        <Col xs={{span: 24, offset: 0}} sm={{span: 9, offset: 1}} md={{span: 9, offset: 1}}
-             lg={{span: 9, offset: 1}}>
+        <Col xs={{span: 24, offset: 0}} sm={{span: 9, offset: 1}} md={{span: 22}}
+             lg={{span: 22}} xl={{span: 9, offset: 1}}>
             <Title>Q&A on coronaviruses (COVID-19)</Title>
             <Collapse defaultActiveKey={[""]}>
                 <Panel header="What is a coronavirus?" key="1">

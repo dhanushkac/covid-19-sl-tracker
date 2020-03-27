@@ -17,10 +17,10 @@ const HospitalGrid = ({data}) => {
     const displayData = [...data].slice((index - 1) * pageSize, index * pageSize);
 
     return (
-        <Col xs={{span: 24}} sm={{span: 24}} md={{span: 20}} style={{marginTop: "25px"}}>
+        <Col xs={{span: 24}} sm={{span: 24}} md={{span: 24}} lg={{span: 24}} xl={{span: 20}} style={{marginTop: "25px"}}>
             <Pagination defaultCurrent={1} total={17} pageSize={pageSize} onChange={onchange}
                         style={{marginBottom: "10px"}}/>
-            <Row>
+            <Row gutter={[32, 16]}>
                 {displayData && displayData.map(item => {
                     const name = (item.hospital.name).replace(/^TH/g, "Teaching Hospital");
                     const titleNode = <Tooltip placement="bottom" title={name}>
@@ -32,8 +32,8 @@ const HospitalGrid = ({data}) => {
                     const cumulativeForeign = formatNumber(item.cumulative_foreign);
                     const treatmentForeign = formatNumber(item.treatment_foreign);
 
-                    return <Col key={item.hospital_id} xs={{span: 24}} sm={{span: 24}} md={{span: 5}}
-                                style={{marginRight: "20px", marginBottom: "20px"}}>
+                    return <Col key={item.hospital_id} xs={{span: 24}} sm={{span: 12}} md={{span: 8}} lg={{span: 8}} xl={{span: 6}}
+                                style={{marginBottom: "20px"}}>
                         <Card title={titleNode}>
                             <TreatmentCount type="Sri Lankans" cumulative={cumulativeLocal}
                                             treatment={treatmentLocal}/>

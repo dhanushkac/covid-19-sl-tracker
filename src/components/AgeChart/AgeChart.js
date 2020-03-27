@@ -16,6 +16,11 @@ const AgeChart = ({data, updatedAt}) => {
         yAxis: {
             visible: false
         },
+        xAxis:{
+            title: {
+                visible: false
+            }
+        },
         color: "#ff8f2f",
         meta: {
             age: {
@@ -36,7 +41,7 @@ const AgeChart = ({data, updatedAt}) => {
                 fill: "#0D0E68",
                 fontSize: 12,
                 fontWeight: 600,
-                opacity: 0.6,
+                opacity: 0.6
             },
         },
         tooltip: {

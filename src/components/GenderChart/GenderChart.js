@@ -2,8 +2,11 @@ import React from "react";
 import { PieChart } from "@opd/g2plot-react";
 import LastUpdate from "../LastUpdate/LastUpdate";
 import { Col } from "antd";
+import useScreenDimensions from "../../utils/useScreenDimensions";
 
 const GenderChart = ({chartData, updatedAt}) => {
+
+    const [dimension] = useScreenDimensions();
 
     const config = {
         forceFit: true,
@@ -14,18 +17,15 @@ const GenderChart = ({chartData, updatedAt}) => {
             visible: false,
             text: ""
         },
-        radius: 0.85,
+        radius: dimension.width > 350 ? 1 : 0.8,
         data: chartData,
         responsive: true,
         yField: "type",
         angleField: "value",
         colorField: "type",
+        height: 300,
         label: {
             visible: true,
-            style: {
-                color: "white",
-                fontSize: "1.1em"
-            },
             type: "spider",
             formatter: (v) => {
                 return v + "%"
@@ -33,12 +33,12 @@ const GenderChart = ({chartData, updatedAt}) => {
         },
         legend: {
             visible: true,
-            offsetX: 0
+            position: "bottom",
         },
     };
 
     return <Col span={24} style={{marginTop: "40px"}}>
-        <div style={{width: "95%", margin: "auto"}}>
+        <div>
             <div className="country-data-title">The gender based distribution of the COVID-19 confirmed
                 cases
             </div>
