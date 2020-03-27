@@ -12,6 +12,7 @@ import moment from "moment";
 import DistrictPanel from "./Pages/DistrictPanel/DistrictPanel";
 import DistrictMapPanel from "./Pages/DistrictMapPanel/DistrictMapPanel";
 import ChartPanel from "./Pages/ChartPanel/ChartPanel";
+import ASIAN_COUNTRIES from "./utils/AsianCountries";
 
 const {Header, Content, Footer} = Layout;
 const {Title, Text} = Typography;
@@ -45,6 +46,10 @@ function App() {
     const [countriesReported, setCountriesReported] = useState(0);
     const [ageChartData, setAgeChartData] = useState([]);
     const [patientDataUpdatedAt, setPatientDataUpdatedAt] = useState("");
+    const [isAsia, setIsAsia] = useState(false);
+    const [defaultCounties] = useState(["Malaysia", "Sri Lanka", "India", "Pakistan", "Singapore", "Japan"]);
+    const [filteredCountries, setFilteredCountries] = useState([]);
+    const [asianChartData, setAsianChartData] = useState([]);
 
     useEffect(() => {
         fetchData(fetchCountryData);
@@ -145,13 +150,31 @@ function App() {
                     const formattedUpdatedAt = moment(updatedAt, "YYYY-M-DD", true).format("DD-MM-YYYY hh:mm A");
                     setPatientDataUpdatedAt(formattedUpdatedAt);
                     setPatientChartData(chartData);
+
+                    const processedAsianData = [];
+
+                    ASIAN_COUNTRIES.map(country => {
+
+                        const lastIndex = val[country].length - 1;
+                        const countryData = val[country][lastIndex];
+
+                        const tempActive = {};
+                        tempActive["country"] = country;
+                        tempActive["type"] = "Confirmed cases";
+                        tempActive["value"] = countryData.confirmed;
+                        processedAsianData.push(tempActive);
+
+                        return countryData;
+                    });
+
+                    setAsianChartData([...processedAsianData]);
+                    callback();
+
                 }).catch(_ => setError(true));
 
             setHospitalData([...hospitalData, ...data.hospital_data]);
             setIsLoading(false);
             setError(false);
-
-            callback();
         } catch(error) {
             setError(true);
         }
@@ -165,6 +188,20 @@ function App() {
         const val = formatNumber(value);
         return val + " " + text;
     };
+
+    function onChangeChart(value) {
+        setIsAsia(value.target.value);
+    }
+
+    function onChangeCountry(countries) {
+        defaultCounties.forEach(element => {
+            filteredCountries.push(element);
+        });
+        countries.forEach(element => {
+            filteredCountries.push(element);
+        });
+        setFilteredCountries([filteredCountries]);
+    }
 
     const cases = {
         text: TOTAL_CASES,
@@ -194,6 +231,47 @@ function App() {
         inHospital: state.local_total_number_of_individuals_in_hospitals,
         countries: countriesReported,
         other: otherData
+    };
+
+    const patientChartConf = {
+        config: {
+            title: {
+                visible: false
+            },
+            description: {
+                visible: false
+            },
+            padding: "auto",
+            forceFit: true,
+            point: {
+                visible: true,
+                size: 4
+            },
+            responsive: true,
+            smooth: true,
+            chartData: isAsia ? asianChartData : patientChartData,
+            label: {
+                visible: isAsia ? true : true,
+                offset: 20,
+                type: "point"
+            },
+            lineChart: !isAsia,
+            xField: isAsia ? "value" : "date",
+            yField: isAsia ? "country" : "confirmed",
+            stackField: isAsia ? "type" : "",
+            yAxis: {
+                tickCount: isAsia ? 18 : 10
+            },
+            xAxis: {
+                tickCount: isAsia ? 10 : 10
+            },
+            height: isAsia ? 500 : 400,
+            style: {
+                width: "100%"
+            }
+        },
+        countries: [defaultCounties, filteredCountries],
+        onChange: [onChangeChart, onChangeCountry]
     };
 
     return (
