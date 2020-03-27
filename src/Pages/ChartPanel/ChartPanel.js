@@ -1,27 +1,24 @@
 import React from "react";
 import { Col, Row } from "antd";
-import PatientChart from "../../components/PatientChart/PatientChart";
 import AgeChart from "../../components/AgeChart/AgeChart";
-import GenderChart from "../../components/GenderChart/GenderChart";
+import ConfirmedHistogram from "../../components/ConfirmedHistogram/ConfirmedHistogram";
 
-const ChartPanel = ({patientChartData, ageChartData, patientDataUpdatedAt, ageDataUpdatedAt, genderChartData}) => {
+const ChartPanel = ({ageChartData, ageDataUpdatedAt, patientDataUpdatedAt, patientChartData}) => {
 
     return (
-        <Col xs={{span: 24}} sm={{span: 24}} md={{span: 24}} lg={{span: 24}} xl={{span: 15}}>
-            <Row>
-                <PatientChart data={patientChartData} updatedAt={patientDataUpdatedAt}/>
-                <Col span={24}>
-                    <Row justify="space-around">
-                        <Col xs={{span: 24}} sm={{span: 24}} md={{span: 24}} lg={{span: 11}} xl={{span: 11}}>
-                            <AgeChart data={ageChartData} updatedAt={ageDataUpdatedAt}/>
-                        </Col>
-                        <Col xs={{span: 24}} sm={{span: 24}} md={{span: 24}} lg={{span: 11}} xl={{span: 11}}>
-                            <GenderChart chartData={genderChartData} updatedAt={ageDataUpdatedAt}/>
-                        </Col>
-                    </Row>
-                </Col>
-            </Row>
-        </Col>
+        <React.Fragment>
+            <Col span="24">
+                <Row justify="space-between" gutter={[32, 16]}>
+                    <Col xs={{span: 24}} sm={{span: 24}} md={{span: 24}} lg={{span: 12}} xl={{span: 12}}>
+                        <AgeChart data={ageChartData} updatedAt={ageDataUpdatedAt}/>
+                    </Col>
+                    <Col xs={{span: 24}} sm={{span: 24}} md={{span: 24}} lg={{span: 12}} xl={{span: 12}}
+                         style={{display: "flex"}}>
+                        <ConfirmedHistogram patientChartData={patientChartData} updatedAt={patientDataUpdatedAt}/>
+                    </Col>
+                </Row>
+            </Col>
+        </React.Fragment>
     )
 };
 

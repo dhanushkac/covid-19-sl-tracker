@@ -17,7 +17,7 @@ const GenderChart = ({chartData, updatedAt}) => {
             visible: false,
             text: ""
         },
-        radius: dimension.width > 350 ? 1 : 0.8,
+        radius: dimension.width > 450 ? 1 : 0.7,
         data: chartData,
         responsive: true,
         yField: "type",
@@ -37,7 +37,7 @@ const GenderChart = ({chartData, updatedAt}) => {
         },
     };
 
-    return <Col span={24} style={{marginTop: "40px"}}>
+    return <Col span={24} className="chart-grid">
         <div>
             <div className="country-data-title">The gender based distribution of the COVID-19 confirmed
                 cases

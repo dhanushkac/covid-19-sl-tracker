@@ -50,7 +50,7 @@ const AgeChart = ({data, updatedAt}) => {
     };
 
     return (
-        <Col span={24} style={{marginTop: "40px"}}>
+        <Col span={24} className="chart-grid">
             <div className="country-data-title">The age based distribution of the COVID-19 confirmed
                 cases
             </div>

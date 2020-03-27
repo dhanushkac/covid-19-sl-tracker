@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import "./App.css";
-import { BackTop, Layout, Result, Row, Spin, Typography } from "antd";
+import { BackTop, Col, Layout, Result, Row, Spin, Typography } from "antd";
 import { faAmbulance, faBed, faWalking } from "@fortawesome/free-solid-svg-icons";
 import { DEATHS, GLOBAL_RECOVERED, LOCAL_RECOVERED, NEW_CASES, NEW_DEATHS, TOTAL_CASES } from "./utils/Strings";
 import PanelPage from "./Pages/PanelPage/PanelPage";
@@ -13,6 +13,8 @@ import DistrictPanel from "./Pages/DistrictPanel/DistrictPanel";
 import DistrictMapPanel from "./Pages/DistrictMapPanel/DistrictMapPanel";
 import ChartPanel from "./Pages/ChartPanel/ChartPanel";
 import ASIAN_COUNTRIES from "./utils/AsianCountries";
+import GenderChart from "./components/GenderChart/GenderChart";
+import PatientChart from "./components/PatientChart/PatientChart";
 
 const {Header, Content, Footer} = Layout;
 const {Title, Text} = Typography;
@@ -137,11 +139,11 @@ function App() {
                     const sriLankaData = [...val["Sri Lanka"]];
                     const chartData = sriLankaData.map(obj => {
                         const date = moment();
-                        const objDate = moment(obj.date, "YYYY-M-DD", true);
+                        const objDate = moment(obj.date, "YYYY-M-D", true);
                         if(obj.recovered >= 2 && objDate.isBefore(date) && obj.recovered > data.local_recovered) {
                             return {...obj, "confirmed": obj.confirmed - 1};
                         }
-                        const formattedDate = objDate.format("DD-MM");
+                        const formattedDate = objDate.format("D-MM");
                         return {...obj, date: formattedDate};
                     });
 
@@ -251,7 +253,7 @@ function App() {
             smooth: true,
             chartData: isAsia ? asianChartData : patientChartData,
             label: {
-                visible: isAsia ? true : true,
+                visible: false,
                 offset: 20,
                 type: "point"
             },
@@ -265,9 +267,12 @@ function App() {
             xAxis: {
                 tickCount: isAsia ? 10 : 10
             },
-            height: isAsia ? 500 : 400,
+            height: 500,
             style: {
                 width: "100%"
+            },
+            legend: {
+                visible: false
             }
         },
         countries: [defaultCounties, filteredCountries],
@@ -287,16 +292,25 @@ function App() {
                 {!isLoading && <div>
                     {!isError && <div>
                         <Row className="card-list">
-                            <CardPanel cardData={data} onChange={onChange} lastUpdate={state.update_date_time} isLocal={isLocal}/>
+                            <CardPanel cardData={data} onChange={onChange} lastUpdate={state.update_date_time}
+                                       isLocal={isLocal}/>
                             <QAPanel/>
                         </Row>
                         {!isErrorCountryData && <div>
-                            <Row justify="space-between">
-                                <ChartPanel ageChartData={ageChartData} patientChartData={patientChartData}
-                                            hospitalData={hospitalData}
-                                            patientDataUpdatedAt={patientDataUpdatedAt}
-                                            ageDataUpdatedAt={countryDataUpdatedDate} genderChartData={byGenderData}/>
-                                <DistrictMapPanel districtData={districtData} updatedDate={countryDataUpdatedDate}/>
+                            <Row justify="space-around" gutter={[32, 16]}>
+                                <Col xs={{span: 24}} sm={{span: 24}} md={{span: 24}} lg={{span: 24}} xl={{span: 13}} xxl={{span: 15}}>
+                                    <PatientChart data={patientChartConf} updatedAt={patientDataUpdatedAt}/>
+                                    <GenderChart chartData={byGenderData} updatedAt={patientDataUpdatedAt}/>
+                                </Col>
+                                <Col xs={{span: 24}} sm={{span: 24}} md={{span: 24}} lg={{span: 24}} xl={{span: 11}} xxl={{span: 9}}
+                                     style={{display: "flex"}}>
+                                    <DistrictMapPanel districtData={districtData} updatedDate={countryDataUpdatedDate}/>
+                                </Col>
+                            </Row>
+                            <Row justify="space-around">
+                                <ChartPanel ageChartData={ageChartData} hospitalData={hospitalData}
+                                            ageDataUpdatedAt={countryDataUpdatedDate} patientChartData={patientChartData}
+                                            genderChartData={byGenderData} patientDataUpdatedAt={patientDataUpdatedAt}/>
                             </Row>
                             <Row>
                                 <DistrictPanel districtData={districtData} updatedDate={countryDataUpdatedDate}/>

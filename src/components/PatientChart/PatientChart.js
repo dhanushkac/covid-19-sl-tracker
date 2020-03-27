@@ -2,6 +2,7 @@ import React from "react";
 import { LineChart, StackedBarChart } from "@opd/g2plot-react";
 import LastUpdate from "../LastUpdate/LastUpdate";
 import { Checkbox, Col, Radio, Row } from "antd";
+import "./PatientChart.css";
 
 const PatientChart = ({data, updatedAt}) => {
 
@@ -26,62 +27,54 @@ const PatientChart = ({data, updatedAt}) => {
     };
 
     return (
-        <Col span={24} style={{marginTop: "40px"}}>
+        <Col span={24} className="chart-grid">
             <div className="country-data-title">
                 The daily distribution of the COVID-19 confirmed cases
             </div>
-            <div className="action">
-                <Row align="middle">
-                    <Col span={12} offset={8}>
-                        <Radio.Group
-                            style={{textAlign: "center"}}
-                            onChange={onChange[0]}
-                            defaultValue={false}
-                            buttonStyle="solid"
-                            size="large"
-                        >
-                            <Radio.Button value={false}>Sri Lanka</Radio.Button>
-                            <Radio.Button value={true}> &nbsp; Asia &nbsp;</Radio.Button>
-                        </Radio.Group>
-                    </Col>
-
-                </Row>
-            </div>
             <LastUpdate updated={updatedAt}/>
+            <div className="action">
+                <Radio.Group
+                    style={{textAlign: "center", marginTop: "30px"}}
+                    onChange={onChange[0]} defaultValue={false}
+                    buttonStyle="solid" size="large">
+                    <Radio.Button value={false}>Sri Lanka</Radio.Button>
+                    <Radio.Button value={true}> &nbsp; Asia &nbsp;</Radio.Button>
+                </Radio.Group>
+            </div>
             {chartConf.lineChart ? (
                 <LineChart {...lineChartData} {...chartConf} />
             ) : (
                 <React.Fragment>
                     <Checkbox.Group style={{width: "100%", marginBottom: "40px"}} onChange={onChange[1]}>
-                        <Row justify="end">
-                            <Col xs={12} sm={12} md={8} lg={4} xl={4} offset={4}>
+                        <Row justify="start">
+                            <Col xs={12} sm={12} md={8} lg={6} xl={4}>
                                 <Checkbox value={"China"}>China</Checkbox>
                             </Col>
-                            <Col xs={12} sm={12} md={8} lg={4} xl={4}>
+                            <Col xs={12} sm={12} md={8} lg={6} xl={4}>
                                 <Checkbox value={"Nepal"}>Nepal</Checkbox>
                             </Col>
-                            <Col xs={12} sm={12} md={8} lg={4} xl={4}>
+                            <Col xs={12} sm={12} md={8} lg={6} xl={4}>
                                 <Checkbox value={"Bangladesh"}>Bangladesh</Checkbox>
                             </Col>
-                            <Col xs={12} sm={12} md={8} lg={4} xl={4}>
+                            <Col xs={12} sm={12} md={8} lg={6} xl={4}>
                                 <Checkbox value={"Afghanistan"}>Afghanistan</Checkbox>
                             </Col>
-                            <Col xs={12} sm={12} md={8} lg={4} xl={4}>
+                            <Col xs={12} sm={12} md={8} lg={6} xl={4}>
                                 <Checkbox value={"Bhutan"}>Bhutan</Checkbox>
                             </Col>
-                            <Col xs={12} sm={12} md={8} lg={4} xl={4}>
+                            <Col xs={12} sm={12} md={8} lg={6} xl={4}>
                                 <Checkbox value={"Indonesia"}>Indonesia</Checkbox>
                             </Col>
-                            <Col xs={12} sm={12} md={8} lg={4} xl={4}>
+                            <Col xs={12} sm={12} md={8} lg={6} xl={4}>
                                 <Checkbox value={"Philippines"}>Philippines</Checkbox>
                             </Col>
-                            <Col xs={12} sm={12} md={8} lg={4} xl={4}>
+                            <Col xs={12} sm={12} md={8} lg={6} xl={4}>
                                 <Checkbox value={"Maldives"}>Maldives</Checkbox>
                             </Col>
-                            <Col xs={12} sm={12} md={8} lg={4} xl={4}>
+                            <Col xs={12} sm={12} md={8} lg={6} xl={4}>
                                 <Checkbox value={"Thailand"}>Thailand</Checkbox>
                             </Col>
-                            <Col xs={12} sm={12} md={8} lg={4} xl={4}>
+                            <Col xs={12} sm={12} md={8} lg={6} xl={4}>
                                 <Checkbox value={"Vietnam"}>Vietnam</Checkbox>
                             </Col>
                         </Row>

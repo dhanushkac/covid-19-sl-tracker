@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import "./MapPanel.css";
 import GoogleMapReact from "google-map-react";
-import { Col, Tooltip } from "antd";
+import { Col, Row, Tooltip } from "antd";
 import LastUpdate from "../../components/LastUpdate/LastUpdate";
 import { normalizePatientData } from "../../utils/Numbers";
 import useScreenDimensions from "../../utils/useScreenDimensions";
@@ -36,31 +36,73 @@ const DistrictMapPanel = ({districtData, updatedDate}) => {
 
     const districtColors = patientCountsNormalized.map(value => COLORS[value]);
 
+    const style = {
+        background: "#ffc737",
+        padding: "0px 10px",
+        borderRadius: "5px",
+        color: "#464646",
+        marginRight: "10px"
+    };
+
     return (
-        <Col xs={{span: 24}} sm={{span: 24}} md={{span: 24}} lg={{span: 234}} xl={{span: 8}}>
-            <div style={{marginTop: "40px"}}>
-                <div><span className="country-data-title">The districts reported with the highest number of the COVID-19 confirmed cases</span>
-                </div>
-                <LastUpdate updated={updatedDate}/>
-                <div style={{height: dimension.width < 576 ? "500px" : "800px", width: "100%", margin: "auto", marginTop: "30px"}}>
-                    <GoogleMapReact
-                        draggable={true}
-                        bootstrapURLKeys={{key: "AIzaSyApGiESgJBGHPnwRJDThKi3L9EGrqoj7lk"}}
-                        defaultCenter={center}
-                        defaultZoom={dimension.width < 576 ? 7 : zoom}
-                        yesIWantToUseGoogleMapApiInternals
-                    >
-                        {districtData.map((data, i) => {
-                            return <DistrictData key={data.name} lat={data.geoLocation.lat}
-                                                 lng={data.geoLocation.lng}
-                                                 index={patientCountsNormalized[i]}
-                                                 name={data.name} value={data.patient_count}
-                                                 color={districtColors[i]}/>;
-                        })}
-                    </GoogleMapReact>
-                </div>
+        <div className="chart-grid">
+            <div><span className="country-data-title">The districts reported with the highest number of the COVID-19 confirmed cases</span>
             </div>
-        </Col>
+            <LastUpdate updated={updatedDate}/>
+            <div style={{color: "grey", fontSize: "1.2em !important", marginBottom: "25px", marginTop: "10px"}}>
+                Each district is coloured based on the found confirmed COVID-19 cases.
+            </div>
+            <div style={{height: "50px"}}>
+                <Row justify="start">
+                    <Col xs={{span: 12}} sm={{span: 8}} md={{span: 4}} xl={{span: 6}} span="3">
+                        <span style={{marginRight: "10px"}}>
+                            <span style={{
+                                ...style,
+                                background: "#ffc737"
+                            }}/>   Low
+                        </span>
+                    </Col>
+                    <Col xs={{span: 12}} sm={{span: 8}} md={{span: 4}} xl={{span:6}} span="4">
+                        <span style={{marginRight: "10px"}}>
+                            <span style={{
+                                ...style,
+                                background: "#ff6d00"
+                            }}/> Medium
+                        </span>
+                    </Col>
+                    <Col xs={{span: 12}} sm={{span: 8}} md={{span: 4}} xl={{span: 6}} span="3">
+                        <span style={{marginRight: "10px"}}>
+                            <span style={{
+                                ...style,
+                                background: "#FF0015"
+                            }}/> High
+                        </span>
+                    </Col>
+                </Row>
+            </div>
+            <div style={{
+                height: dimension.width < 576 ? "500px" : "800px",
+                width: "100%",
+                margin: "auto",
+                marginTop: "30px"
+            }}>
+                <GoogleMapReact
+                    draggable={true}
+                    bootstrapURLKeys={{key: "AIzaSyApGiESgJBGHPnwRJDThKi3L9EGrqoj7lk"}}
+                    defaultCenter={center}
+                    defaultZoom={dimension.width < 576 ? 7 : zoom}
+                    yesIWantToUseGoogleMapApiInternals
+                >
+                    {districtData.map((data, i) => {
+                        return <DistrictData key={data.name} lat={data.geoLocation.lat}
+                                             lng={data.geoLocation.lng}
+                                             index={patientCountsNormalized[i]}
+                                             name={data.name} value={data.patient_count}
+                                             color={districtColors[i]}/>;
+                    })}
+                </GoogleMapReact>
+            </div>
+        </div>
     );
 };
 

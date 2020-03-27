@@ -11,7 +11,7 @@ const {Title} = Typography;
 const CardPanel = ({lastUpdate, cardData, onChange, isLocal}) => {
     const formattedDate = moment(lastUpdate, "DD-MM-YYYY hh:mm A", true).format("YYYY MMMM DD hh:mm A");
     return (
-        <Col xs={{span: 24, offset: 0}} sm={{span: 14}} md={{span: 24}}
+        <Col xs={{span: 24, offset: 0}} sm={{span: 24}} md={{span: 24}}
              lg={{span: 24}} xl={{span: 14}}>
             <div className="last-sync" style={{fontWeight: "600"}}>Last updated</div>
             <Title className="last-sync" level={2}>
@@ -28,7 +28,7 @@ const CardPanel = ({lastUpdate, cardData, onChange, isLocal}) => {
                 {
                     cardData.main.map(item => {
                         const value = formatNumber(item.value);
-                        return <Col key={item.style} xs={{span: 24, offset: 0}} sm={{span: 6}}
+                        return <Col key={item.style} xs={{span: 24, offset: 0}} sm={{span: 24}}
                                     md={{span: 8, offset: 0}}>
                             <Card title={item.text} value={value}
                                   newStatus={item.newText} icon={item.icon} style={item.style}/>
@@ -36,13 +36,13 @@ const CardPanel = ({lastUpdate, cardData, onChange, isLocal}) => {
                     })
                 }
             </Row>
-            { isLocal && <Row>
-                <Col xs={{span: 24, offset: 0}} sm={{span: 6}} md={{span: 8, offset: 0}}>
+            { isLocal && <Row justify="space-around">
+                <Col xs={{span: 24}} sm={{span: 22}} md={{span: 8}} lg={{span: 8, offset: 0}}>
                     <div style={{width: "90%", margin: "auto"}}>
                         <Message type="light" style={{fontsize: "1em"}}>
                             <div className="card-info">
                                 <div className="card-info-title">
-                                    Suspected or Confirmed cases currently in hospitals
+                                    Patients currently in hospitals
                                 </div>
                                 <div className="card-info-data">
                                     {cardData.inHospital}
@@ -50,12 +50,13 @@ const CardPanel = ({lastUpdate, cardData, onChange, isLocal}) => {
                                 <div style={{
                                     color: "grey",
                                     height: "25px"
-                                }}/>
+                                }}>Suspected or Confirmed
+                                </div>
                             </div>
                         </Message>
                     </div>
                 </Col>
-                <Col xs={{span: 24, offset: 0}} sm={{span: 6}} md={{span: 8, offset: 0}}>
+                <Col xs={{span: 24}} sm={{span: 22}} md={{span: 8}} lg={{span: 8, offset: 0}}>
                     <div style={{width: "90%", margin: "auto"}}>
                         <Message type="light" style={{fontsize: "1em"}}>
                             <div className="card-info">
@@ -76,12 +77,12 @@ const CardPanel = ({lastUpdate, cardData, onChange, isLocal}) => {
                         </Message>
                     </div>
                 </Col>
-                <Col xs={{span: 24, offset: 0}} sm={{span: 6}} md={{span: 8, offset: 0}}>
+                <Col xs={{span: 24}} sm={{span: 22}} md={{span: 8}} lg={{span: 8, offset: 0}}>
                     <div style={{width: "90%", margin: "auto"}}>
                         <Message type="light" style={{fontsize: "1em"}}>
                             <div className="card-info">
                                 <div className="card-info-title">
-                                    Number of countries affected with COVID-19
+                                    Countries or Territories  affected
                                 </div>
                                 <div className="card-info-data">
                                     {cardData.countries}
