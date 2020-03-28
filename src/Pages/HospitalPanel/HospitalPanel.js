@@ -3,7 +3,6 @@ import { Col, Row, Typography } from "antd";
 import "./HospitalPanel.css";
 import HospitalGrid from "../../components/HospitalGrid/HospitalGrid";
 import LastUpdate from "../../components/LastUpdate/LastUpdate";
-import TwitterWidget from "../../components/TwitterWidget/TwitterWidget";
 
 const {Title} = Typography;
 

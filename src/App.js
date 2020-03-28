@@ -2,7 +2,16 @@ import React, { useEffect, useState } from "react";
 import "./App.css";
 import { BackTop, Col, Layout, Result, Row, Spin, Typography } from "antd";
 import { faAmbulance, faBed, faWalking } from "@fortawesome/free-solid-svg-icons";
-import { DEATHS, GLOBAL_RECOVERED, LOCAL_RECOVERED, NEW_CASES, NEW_DEATHS, TOTAL_CASES } from "./utils/Strings";
+import {
+    DEATHS,
+    GLOBAL_RECOVERED,
+    LOCAL_RECOVERED,
+    NEW_CASE,
+    NEW_CASES,
+    NEW_DEATH,
+    NEW_DEATHS,
+    TOTAL_CASES
+} from "./utils/Strings";
 import PanelPage from "./Pages/PanelPage/PanelPage";
 import HospitalPanel from "./Pages/HospitalPanel/HospitalPanel";
 import QAPanel from "./components/QAPanel/QAPanel";
@@ -60,7 +69,7 @@ function App() {
     const fetchCountryData = async () => {
         try {
             setIsLoading(true);
-            const response = await fetch(`https://intense-anchorage-68667.herokuapp.com/status`);
+            const response = await fetch(`http://localhost:3200/status`);
 
             if(!response.ok) {
                 throw Error(response.statusText);
@@ -186,9 +195,9 @@ function App() {
         setIsLocal(value.target.value);
     }
 
-    const getStatusText = (value, text) => {
+    const getStatusText = (value, plural, singular) => {
         const val = formatNumber(value);
-        return val + " " + text;
+        return val === "1" ? val + " " + singular : val + " " + plural;
     };
 
     function onChangeChart(value) {
@@ -208,7 +217,7 @@ function App() {
     const cases = {
         text: TOTAL_CASES,
         value: isLocal ? state.local_total_cases : state.global_total_cases,
-        newText: isLocal ? getStatusText(state.local_new_cases, NEW_CASES) : getStatusText(state.global_new_cases, NEW_CASES),
+        newText: isLocal ? getStatusText(state.local_new_cases, NEW_CASES, NEW_CASE) : getStatusText(state.global_new_cases, NEW_CASES, NEW_CASE),
         icon: faAmbulance,
         style: "#ff4d4f"
     };
@@ -216,7 +225,7 @@ function App() {
     const deaths = {
         text: DEATHS,
         value: isLocal ? state.local_deaths : state.global_deaths,
-        newText: isLocal ? getStatusText(state.local_new_deaths, NEW_DEATHS) : getStatusText(state.global_new_deaths, NEW_DEATHS),
+        newText: isLocal ? getStatusText(state.local_new_deaths, NEW_DEATHS, NEW_DEATH) : getStatusText(state.global_new_deaths, NEW_DEATHS, NEW_DEATH),
         icon: faBed,
         style: "#ff8f2f"
     };
