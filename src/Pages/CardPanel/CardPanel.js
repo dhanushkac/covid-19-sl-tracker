@@ -61,7 +61,7 @@ const CardPanel = ({lastUpdate, cardData, onChange, isLocal}) => {
                         <Message type="light" style={{fontsize: "1em"}}>
                             <div className="card-info">
                                 <div className="card-info-title">
-                                    Patients in quarantine centers
+                                    Confirmed patients in quarantine centers
                                 </div>
                                 <div>
                                     <div className="card-info-data">
