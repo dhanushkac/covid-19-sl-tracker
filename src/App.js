@@ -219,7 +219,7 @@ function App() {
         value: isLocal ? state.local_total_cases : state.global_total_cases,
         newText: isLocal ? getStatusText(state.local_new_cases, NEW_CASES, NEW_CASE) : getStatusText(state.global_new_cases, NEW_CASES, NEW_CASE),
         icon: faAmbulance,
-        style: "#ff4d4f"
+        style: "#ff8f2f"
     };
 
     const deaths = {
@@ -227,7 +227,7 @@ function App() {
         value: isLocal ? state.local_deaths : state.global_deaths,
         newText: isLocal ? getStatusText(state.local_new_deaths, NEW_DEATHS, NEW_DEATH) : getStatusText(state.global_new_deaths, NEW_DEATHS, NEW_DEATH),
         icon: faBed,
-        style: "#ff8f2f"
+        style: "#ff4d4f"
     };
 
     const recovered = {
