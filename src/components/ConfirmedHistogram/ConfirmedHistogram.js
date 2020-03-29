@@ -7,10 +7,10 @@ const ConfirmedHistogram = ({patientChartData, updatedAt}) => {
     const data = [];
 
     if(patientChartData) {
-        for(let i = 1; i < patientChartData.length; i++) {
+        for(let i = 0; i < patientChartData.length - 1; i++) {
             data.push({
                 date: patientChartData[i].date,
-                confirmed: patientChartData[i].confirmed - patientChartData[i - 1].confirmed
+                confirmed: patientChartData[i].confirmed - patientChartData[i + 1].confirmed
             });
         }
     }
