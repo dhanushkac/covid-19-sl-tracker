@@ -54,6 +54,7 @@ const AgeChart = ({data, updatedAt}) => {
             <div className="country-data-title">The age based distribution of the COVID-19 confirmed
                 cases
             </div>
+            <div style={{ color: "#f68585", fontSize: "1.2em !important"}}>This chart no longer updates due to the termination of the source the Epidemiology Unit.</div>
             <LastUpdate updated={updatedAt}/>
             <ColumnChart {...config}/>
         </Col>

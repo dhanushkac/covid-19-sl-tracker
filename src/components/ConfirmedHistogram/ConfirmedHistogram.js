@@ -4,31 +4,20 @@ import LastUpdate from "../LastUpdate/LastUpdate";
 import { Col } from "antd";
 
 const ConfirmedHistogram = ({patientChartData, updatedAt}) => {
-    const data = [];
-
-    if(patientChartData) {
-        for(let i = 1; i < patientChartData.length; i++) {
-            data.push({
-                date: patientChartData[i].date,
-                confirmed: patientChartData[i].confirmed - patientChartData[i - 1].confirmed
-            });
-        }
-    }
-
     const config = {
         title: {
             visible: false
         },
-        data,
+        data: patientChartData,
         meta: {
-            confirmed: {
-                alias:"found"
+            count: {
+                alias: "found"
             }
         },
         responsive: true,
         xField: "date",
-        yField: "confirmed",
-        stackField: "confirmed",
+        yField: "count",
+        stackField: "count",
         color: ["#82d1de"],
         areaStyle: {
             fillOpacity: 0.7,
@@ -36,6 +25,9 @@ const ConfirmedHistogram = ({patientChartData, updatedAt}) => {
         legend: {
             visible: false
         },
+        xAxis: {
+            tickCount: 5
+        }
     };
 
     return <Col span={24} className="chart-grid">

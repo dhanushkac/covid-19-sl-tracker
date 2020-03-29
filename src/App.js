@@ -49,13 +49,16 @@ function App() {
         global_recovered: 0,
     });
     const [hospitalData, setHospitalData] = useState([]);
+    const [dailyData, setDailyData] = useState([]);
     const [patientChartData, setPatientChartData] = useState([]);
     const [districtData, setDistrictData] = useState([]);
     const [otherData, setOtherData] = useState({});
     const [countryDataUpdatedDate, setCountryDataUpdatedDate] = useState("");
     const [byGenderData, setByGenderData] = useState([]);
+    const [genderDataUpdatedAt, setGenderDataUpdatedAt] = useState("");
     const [countriesReported, setCountriesReported] = useState(0);
     const [ageChartData, setAgeChartData] = useState([]);
+    const [ageDataUpdatedAt, setAgeDataUpdatedAt] = useState("");
     const [patientDataUpdatedAt, setPatientDataUpdatedAt] = useState("");
     const [isAsia, setIsAsia] = useState(false);
     const [defaultCounties] = useState(["Malaysia", "Sri Lanka", "India", "Pakistan", "Singapore", "Japan"]);
@@ -78,15 +81,11 @@ function App() {
             const json = await response.json();
             const data = json.data;
 
-            const dateTime = data.updated_at.split(" – ");
-            const formattedDate = dateTime[0].replace(/\./g, "-");
-            const formattedTime = dateTime[1].replace(".", ":").replace("am", " AM").replace("pm", " PM");
-
             setDistrictData(data.district_data);
             setOtherData(data.other_data);
-            setCountryDataUpdatedDate(formattedDate + " " + formattedTime);
+            setCountryDataUpdatedDate(data.updated_at);
 
-            const genderData = Object.entries(data.by_gender).map(value => {
+            const genderData = Object.entries(data.by_gender.data).map(value => {
                 return {
                     type: value[0],
                     value: value[1]
@@ -94,11 +93,12 @@ function App() {
             });
 
             setByGenderData(genderData);
+            setGenderDataUpdatedAt(data.by_gender.last_update);
             setCountriesReported(data.countries_reported);
-            setIsLoading(false);
-            setErrorCountryData(false);
+            setAgeDataUpdatedAt(data.by_age.last_update);
+            setDailyData(data.daily_data);
 
-            const chartData = data.by_age.map(ageData => {
+            const chartData = data.by_age.data.map(ageData => {
                 const age = Object.keys(ageData)[0];
                 const count = ageData[age];
                 return {
@@ -108,6 +108,8 @@ function App() {
             });
 
             setAgeChartData(chartData);
+            setIsLoading(false);
+            setErrorCountryData(false);
         } catch(e) {
             setErrorCountryData(true);
         }
@@ -152,7 +154,7 @@ function App() {
                         if(obj.recovered >= 2 && objDate.isBefore(date) && obj.recovered > data.local_recovered) {
                             return {...obj, "confirmed": obj.confirmed - 1};
                         }
-                        const formattedDate = objDate.format("D-MM");
+                        const formattedDate = objDate.format("DD MMM");
                         return {...obj, date: formattedDate};
                     });
 
@@ -274,7 +276,7 @@ function App() {
                 tickCount: isAsia ? 18 : 10
             },
             xAxis: {
-                tickCount: isAsia ? 10 : 10
+                tickCount: 5
             },
             height: 500,
             style: {
@@ -307,19 +309,22 @@ function App() {
                         </Row>
                         {!isErrorCountryData && <div>
                             <Row justify="space-around" gutter={[32, 16]}>
-                                <Col xs={{span: 24}} sm={{span: 24}} md={{span: 24}} lg={{span: 24}} xl={{span: 13}} xxl={{span: 15}}>
+                                <Col xs={{span: 24}} sm={{span: 24}} md={{span: 24}} lg={{span: 24}} xl={{span: 13}}
+                                     xxl={{span: 15}}>
                                     <PatientChart data={patientChartConf} updatedAt={patientDataUpdatedAt}/>
-                                    <GenderChart chartData={byGenderData} updatedAt={countryDataUpdatedDate}/>
+                                    <GenderChart chartData={byGenderData} updatedAt={genderDataUpdatedAt}/>
                                 </Col>
-                                <Col xs={{span: 24}} sm={{span: 24}} md={{span: 24}} lg={{span: 24}} xl={{span: 11}} xxl={{span: 9}}
+                                <Col xs={{span: 24}} sm={{span: 24}} md={{span: 24}} lg={{span: 24}} xl={{span: 11}}
+                                     xxl={{span: 9}}
                                      style={{display: "flex"}}>
                                     <DistrictMapPanel districtData={districtData} updatedDate={countryDataUpdatedDate}/>
                                 </Col>
                             </Row>
                             <Row justify="space-around">
-                                <ChartPanel ageChartData={ageChartData} hospitalData={hospitalData}
-                                            ageDataUpdatedAt={countryDataUpdatedDate} patientChartData={patientChartData}
-                                            genderChartData={byGenderData} patientDataUpdatedAt={patientDataUpdatedAt}/>
+                                <ChartPanel ageChartData={ageChartData}
+                                            ageDataUpdatedAt={ageDataUpdatedAt}
+                                            patientChartData={dailyData}
+                                            patientDataUpdatedAt={countryDataUpdatedDate}/>
                             </Row>
                             <Row>
                                 <DistrictPanel districtData={districtData} updatedDate={countryDataUpdatedDate}/>
