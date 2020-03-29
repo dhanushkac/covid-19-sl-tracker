@@ -42,7 +42,7 @@ const GenderChart = ({chartData, updatedAt}) => {
             <div className="country-data-title">The gender based distribution of the COVID-19 confirmed
                 cases
             </div>
-            <div style={{ color: "#f68585", fontSize: "1.2em !important"}}>This chart no longer updates due to the termination of the source the Epidemiology Unit.</div>
+            <div style={{ color: "#f68585", fontSize: "1.2em !important"}}>This chart no longer updates due to the termination of the source by the Epidemiology Unit.</div>
             <LastUpdate updated={updatedAt}/>
             <PieChart {...config} />
         </div>
