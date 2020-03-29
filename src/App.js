@@ -309,7 +309,7 @@ function App() {
                             <Row justify="space-around" gutter={[32, 16]}>
                                 <Col xs={{span: 24}} sm={{span: 24}} md={{span: 24}} lg={{span: 24}} xl={{span: 13}} xxl={{span: 15}}>
                                     <PatientChart data={patientChartConf} updatedAt={patientDataUpdatedAt}/>
-                                    <GenderChart chartData={byGenderData} updatedAt={patientDataUpdatedAt}/>
+                                    <GenderChart chartData={byGenderData} updatedAt={countryDataUpdatedDate}/>
                                 </Col>
                                 <Col xs={{span: 24}} sm={{span: 24}} md={{span: 24}} lg={{span: 24}} xl={{span: 11}} xxl={{span: 9}}
                                      style={{display: "flex"}}>
