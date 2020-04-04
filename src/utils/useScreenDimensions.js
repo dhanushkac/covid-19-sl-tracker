@@ -24,7 +24,7 @@ export default function useScreenDimensions() {
             window.addEventListener("resize", handleResize);
             return () => window.removeEventListener("resize", handleResize);
         }
-    }, [hasWindow]);
+    }, [hasWindow, getWindowDimensions]);
 
     return [windowDimensions];
 }

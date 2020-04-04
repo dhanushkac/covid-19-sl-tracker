@@ -1,6 +1,5 @@
 import React from "react";
 import { Col, Row, Typography } from "antd";
-import TwitterWidget from "../../components/TwitterWidget/TwitterWidget";
 
 const {Title, Text} = Typography;
 

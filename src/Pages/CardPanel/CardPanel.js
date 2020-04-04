@@ -2,14 +2,15 @@ import React from "react";
 import { Col, Radio, Row, Typography } from "antd";
 import Card from "../../components/Card/Card";
 import { formatNumber } from "../../utils/Numbers";
-import Message from "../../components/Message/Message";
-import "./CardPanel.css";
+import "../../components/SubCard/CardPanel.css";
 import moment from "moment";
+import SubCard from "../../components/SubCard/SubCard";
 
 const {Title} = Typography;
 
 const CardPanel = ({lastUpdate, cardData, onChange, isLocal}) => {
     const formattedDate = moment(lastUpdate, "DD-MM-YYYY hh:mm A", true).format("YYYY MMMM DD hh:mm A");
+    const quarantineInfo = cardData.other.foreigners + " foreigners included";
     return (
         <Col xs={{span: 24, offset: 0}} sm={{span: 24}} md={{span: 24}}
              lg={{span: 24}} xl={{span: 14}}>
@@ -36,65 +37,12 @@ const CardPanel = ({lastUpdate, cardData, onChange, isLocal}) => {
                     })
                 }
             </Row>
-            { isLocal && <Row justify="space-around">
-                <Col xs={{span: 24}} sm={{span: 22}} md={{span: 8}} lg={{span: 8, offset: 0}}>
-                    <div style={{width: "90%", margin: "auto"}}>
-                        <Message type="light" style={{fontsize: "1em"}}>
-                            <div className="card-info">
-                                <div className="card-info-title">
-                                    Patients currently in hospitals
-                                </div>
-                                <div className="card-info-data">
-                                    {cardData.inHospital}
-                                </div>
-                                <div style={{
-                                    color: "grey",
-                                    height: "25px"
-                                }}>Suspected or Confirmed
-                                </div>
-                            </div>
-                        </Message>
-                    </div>
-                </Col>
-                <Col xs={{span: 24}} sm={{span: 22}} md={{span: 8}} lg={{span: 8, offset: 0}}>
-                    <div style={{width: "90%", margin: "auto"}}>
-                        <Message type="light" style={{fontsize: "1em"}}>
-                            <div className="card-info">
-                                <div className="card-info-title">
-                                    Confirmed patients in quarantine centers
-                                </div>
-                                <div>
-                                    <div className="card-info-data">
-                                        {cardData.other.quarantine_centers}
-                                    </div>
-                                    <div style={{
-                                        color: "grey",
-                                        height: "25px"
-                                    }}>{cardData.other.foreigners} foreigners included
-                                    </div>
-                                </div>
-                            </div>
-                        </Message>
-                    </div>
-                </Col>
-                <Col xs={{span: 24}} sm={{span: 22}} md={{span: 8}} lg={{span: 8, offset: 0}}>
-                    <div style={{width: "90%", margin: "auto"}}>
-                        <Message type="light" style={{fontsize: "1em"}}>
-                            <div className="card-info">
-                                <div className="card-info-title">
-                                    Countries or Territories  affected
-                                </div>
-                                <div className="card-info-data">
-                                    {cardData.countries}
-                                </div>
-                                <div style={{
-                                    color: "grey",
-                                    height: "25px"
-                                }}/>
-                            </div>
-                        </Message>
-                    </div>
-                </Col>
+            {isLocal && <Row justify="space-around">
+                <SubCard title="Patients currently in hospitals" infoData={cardData.inHospital}
+                         additional="Suspected or Confirmed"/>
+                <SubCard title="Confirmed patients in quarantine centers" infoData={cardData.other.quarantine_centers}
+                         additional={quarantineInfo}/>
+                <SubCard title="Countries or Territories affected" infoData={cardData.countries}/>
             </Row>}
         </Col>
     );

@@ -160,7 +160,8 @@ function App() {
 
                     const lastItem = [...sriLankaData].splice(-1, 1);
                     const updatedAt = (lastItem && lastItem.length > 0) ? lastItem[0].date : "";
-                    const formattedUpdatedAt = moment(updatedAt, "YYYY-M-DD", true).format("DD-MM-YYYY hh:mm A");
+                    const formattedUpdatedAt = moment(updatedAt, "YYYY-M-D", true).format("DD-MM-YYYY hh:mm A");
+                    console.log(updatedAt);
                     setPatientDataUpdatedAt(formattedUpdatedAt);
                     setPatientChartData(chartData);
 
