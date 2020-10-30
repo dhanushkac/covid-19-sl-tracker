@@ -40,9 +40,9 @@ const CardPanel = ({lastUpdate, cardData, onChange, isLocal}) => {
             {isLocal && <Row justify="space-around">
                 <SubCard title="Patients currently in hospitals" infoData={cardData.inHospital}
                          additional="Suspected or Confirmed"/>
-                <SubCard title="Confirmed patients in quarantine centers" infoData={cardData.other.quarantine_centers}
-                         additional={quarantineInfo}/>
-                <SubCard title="Countries or Territories affected" infoData={cardData.countries}/>
+//                 <SubCard title="Confirmed patients in quarantine centers" infoData={cardData.other.quarantine_centers}
+//                          additional={quarantineInfo}/>
+//                 <SubCard title="Countries or Territories affected" infoData={cardData.countries}/>
             </Row>}
         </Col>
     );
