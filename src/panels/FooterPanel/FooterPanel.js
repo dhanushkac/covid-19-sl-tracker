@@ -10,16 +10,16 @@ const { Title } = Typography;
 const FooterPanel = () => {
   return (
       <Row justify="space-around" style={{ marginTop: "40px" }}>
-        <Col xs={22} sm={11} md={{ span: 12 }} lg={{ span: 11 }} xl={{ span: 8, offset: 1 }}>
+        <Col xs={{ span: 24 }} sm={{ span: 24 }} md={{ span: 8 }} lg={{ span: 8 }} xl={{ span: 8 }}>
           <div className="important-contacts">
             <Title>Other Important Contacts</Title>
           </div>
           <ContactPanel/>
         </Col>
-        <Col xs={22} sm={11} md={{ span: 12 }} lg={{ span: 11 }} xl={{ span: 6 }}>
+        <Col xs={{ span: 24 }} sm={{ span: 24 }} md={{ span: 8 }} lg={{ span: 8 }} xl={{ span: 8 }}>
           <TwitterWidget/>
         </Col>
-        <Col xs={22} sm={22} md={{ span: 22 }} lg={{ span: 22 }} xl={{ span: 9 }}>
+        <Col xs={{ span: 24 }} sm={{ span: 24 }} md={{ span: 8 }} lg={{ span: 8 }} xl={{ span: 8 }}>
           <CreditPanel/>
         </Col>
       </Row>

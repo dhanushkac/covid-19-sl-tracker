@@ -6,7 +6,7 @@ const { Title } = Typography;
 
 const CreditPanel = () => {
   return (
-    <div style={{ width: "90%", margin: "auto", marginTop: "20px" }}>
+    <div style={{ width: "90%", margin: "auto", marginTop: "20px", paddingLeft: "40px" }}>
       <div>
         <Title level={4}>Credits & Sources:</Title>
         <div>
