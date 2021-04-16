@@ -4,10 +4,9 @@
   "private": true,
   "dependencies": {
     "@ant-design/icons": "^4.0.3",
-    "@fortawesome/fontawesome-svg-core": "^1.2.27",
-    "@fortawesome/free-solid-svg-icons": "^5.12.1",
     "@fortawesome/react-fontawesome": "^0.1.9",
-    "@opd/g2plot-react": "^1.1.0",
+    "@antv/g2plot": "2.3.1",
+    "@opd/g2plot-react": "2.5.0",
     "@testing-library/jest-dom": "^4.2.4",
     "@testing-library/react": "^9.3.2",
     "@testing-library/user-event": "^7.1.2",

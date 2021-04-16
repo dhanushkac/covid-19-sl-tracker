@@ -1,0 +1,34 @@
+.card {
+  font-weight: 600;
+  font-size: 1.8em;
+  text-align: center;
+  border-radius: 15px;
+  padding: 36px 10px 10px;
+  width: 95%;
+  margin: auto auto 24px;
+  border: 1px solid #eeeeee;
+  transition: all .25s ease;
+}
+
+.card-title {
+  margin-top: 10px;
+}
+
+.card-text {
+  color: #1d1d1d;
+  font-size: 1.1em;
+  margin-bottom: .2em;
+}
+
+.new-status-text {
+  font-size: 0.6em;
+}
+
+.status-data {
+  height: 50px;
+}
+
+.card:hover {
+  box-shadow: 5px 5px 5px #eeeeee;
+  transform: translateY(-5px);
+}

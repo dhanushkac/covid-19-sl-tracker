@@ -1,0 +1,11 @@
+.ant-card-head {
+  background: #d2d2d2 !important;
+}
+
+.ant-card-bordered {
+  border: 1px solid #dadada !important;
+}
+
+.ant-card-body {
+  background: #f1f1f1 !important;
+}

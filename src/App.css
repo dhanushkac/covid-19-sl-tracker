@@ -1,65 +1,84 @@
 @import '~antd/dist/antd.css';
 
 .ant-layout-header {
-    box-shadow: 0 0 18px 0 #e6e6e6 !important;
-    padding: 0 20px;
-    height: 96px;
-    display: flex;
-    align-items: center;
+  box-shadow: 0 0 18px 0 #e6e6e6 !important;
+  padding: 0 20px;
+  height: 96px;
+  display: flex;
+  align-items: center;
 }
 
 .logo {
-    background: rgba(255, 255, 255, 0.2);
-    float: left;
-    color: #1d1d1d;
-    font-weight: bold;
-    font-size: 1.3em;
+  background: rgba(255, 255, 255, 0.2);
+  color: #1d1d1d;
+  font-weight: bold;
+  font-size: 1.3em;
+  margin-left: 0.8em;
 }
 
 .ant-layout, .content, .ant-layout-header {
-    background: white;
+  background: white;
 }
 
 .content {
-    margin: 20px;
+  margin: 20px;
 }
 
 .text {
-    font-size: 1.4em;
-    font-weight: 600;
+  font-size: 1.4em;
+  font-weight: 600;
 }
 
 .action {
-    height: 64px;
-    display: grid;
-    align-items: center;
-    margin-bottom: 36px;
+  height: 64px;
+  display: grid;
+  align-items: center;
+  margin-bottom: 36px;
 }
 
 .last-sync {
-    text-align: center;
-}
-
-.card-list {
-    margin-top: 36px;
+  text-align: center;
 }
 
 .spin-load {
-    align-self: center;
-    margin: auto;
+  align-self: center;
+  margin: auto;
 }
 
 .spin-root {
-    display: flex;
-    height: 400px;
+  display: flex;
+  height: 400px;
 }
 
 .footer {
-    text-align: center;
-    background: white;
-    margin-top: 50px;
+  text-align: center;
+  background: white;
+  margin-top: 50px;
 }
 
 .recharts-wrapper {
-    margin: auto;
+  margin: auto;
+}
+
+.chart-grid {
+  padding: 10px 15px;
+  border-radius: 10px;
+  border: 1px solid #d9d9d9;
+  margin-top: 40px;
+}
+
+.ant-radio-group-solid .ant-radio-button-wrapper-checked:not(.ant-radio-button-wrapper-disabled),
+.ant-radio-group-solid .ant-radio-button-wrapper-checked:not(.ant-radio-button-wrapper-disabled):hover {
+  color: #fff;
+  background: #ff4d4f;
+  border-color: #ff4d4f;
+}
+
+.ant-radio-button-wrapper:hover {
+  color: #ff4d4f;
+}
+
+.ant-radio-button-wrapper-checked:not(.ant-radio-button-wrapper-disabled)::before,
+.ant-radio-button-wrapper-checked:not(.ant-radio-button-wrapper-disabled):hover::before {
+  background-color: #ff4d4f;
 }

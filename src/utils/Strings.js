@@ -1,8 +1,14 @@
 export const TOTAL_CASES = "Total Cases";
 export const DEATHS = "Deaths";
-export const LOCAL_RECOVERED = "Recovered & Discharged";
+export const LOCAL_RECOVERED = "Recovered";
 export const GLOBAL_RECOVERED = "Recovered";
 export const NEW_CASES = "New Cases";
 export const NEW_CASE = "New Case";
 export const NEW_DEATHS = "New Deaths";
 export const NEW_DEATH = "New Death";
+export const ACTIVE_CASES = "Active Cases";
+export const TOTAL_PCR_TESTS = "Total PCR Tests";
+export const PCR_TESTS = "PCR Tests";
+export const PCR_TEST = "PCR Test";
+export const IN_HOSPITAL = "In Hospitals";
+export const AFFECTED_COUNTRIES = "Affected Countries";

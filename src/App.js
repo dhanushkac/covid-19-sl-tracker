@@ -1,361 +1,120 @@
 import React, { useEffect, useState } from "react";
-import "./App.css";
-import { BackTop, Col, Layout, Result, Row, Spin, Typography } from "antd";
-import { faAmbulance, faBed, faWalking } from "@fortawesome/free-solid-svg-icons";
-import {
-    DEATHS,
-    GLOBAL_RECOVERED,
-    LOCAL_RECOVERED,
-    NEW_CASE,
-    NEW_CASES,
-    NEW_DEATH,
-    NEW_DEATHS,
-    TOTAL_CASES
-} from "./utils/Strings";
-import PanelPage from "./Pages/PanelPage/PanelPage";
-import HospitalPanel from "./Pages/HospitalPanel/HospitalPanel";
-import QAPanel from "./components/QAPanel/QAPanel";
-import CardPanel from "./Pages/CardPanel/CardPanel";
-import { formatNumber } from "./utils/Numbers";
-import moment from "moment";
-import DistrictPanel from "./Pages/DistrictPanel/DistrictPanel";
-import DistrictMapPanel from "./Pages/DistrictMapPanel/DistrictMapPanel";
-import ChartPanel from "./Pages/ChartPanel/ChartPanel";
-import ASIAN_COUNTRIES from "./utils/AsianCountries";
-import GenderChart from "./components/GenderChart/GenderChart";
-import PatientChart from "./components/PatientChart/PatientChart";
+import { Layout, Result, Spin } from "antd";
 
-const {Header, Content, Footer} = Layout;
-const {Title, Text} = Typography;
+import FooterPanel from "./panels/FooterPanel";
+import HospitalPanel from "./panels/HospitalPanel/HospitalPanel";
+import HeaderPanel from "./panels/HeaderPanel/HeaderPanel";
+import ChartPanel from "./panels/ChartPanel/ChartPanel";
+import AboutPanel from "./panels/AboutPanel/AboutPanel";
+import InfoPanel from "./panels/InfoPanel";
+import Navigation from "./components/Navigation";
+import { INITIAL_GLOBAL_DATA, INITIAL_LOCAL_DATA } from "./utils/state";
+import { getStatData } from "./utils/stat.helper";
+import { loadCountryData, loadData, loadHistoryData } from "./services/main.service";
+
+import "./App.css";
+
+const { Content, Footer } = Layout;
 
 function App() {
 
-    const [isLoading, setIsLoading] = useState(false);
-    const [isError, setError] = useState(false);
-    const [isErrorCountryData, setErrorCountryData] = useState(false);
-    const [isLocal, setIsLocal] = useState(true);
-    const [state, setState] = useState({
-        update_date_time: "",
-        local_new_cases: 0,
-        local_total_cases: 0,
-        local_deaths: 0,
-        local_new_deaths: 0,
-        local_recovered: 0,
-        local_total_number_of_individuals_in_hospitals: 0,
-        global_new_cases: 0,
-        global_total_cases: 0,
-        global_deaths: 0,
-        global_new_deaths: 0,
-        global_recovered: 0,
+  const [isLoading, setIsLoading] = useState(false);
+  const [isLocal, setIsLocal] = useState(true);
+  const [lastUpdated, setLastUpdated] = useState("");
+
+  const [localData, setLocalData] = useState(INITIAL_LOCAL_DATA);
+  const [globalData, setGlobalData] = useState(INITIAL_GLOBAL_DATA);
+  const [pcrData, setPcrData] = useState([]);
+  const [hospitalData, setHospitalData] = useState([]);
+  const [historyData, setHistoryData] = useState([]);
+  const [countryData, setCountryData] = useState([]);
+
+  const [error, setError] = useState({ error: false, message: "" });
+  const [historyError, setHistoryError] = useState({ error: false, message: "" });
+  const [countryDataError, setCountryDataError] = useState({ error: false, message: "" });
+
+  const handleState = (data) => {
+    if (data.error) {
+      setError({ ...error, error: true, message: data.errorMessage });
+      return;
+    }
+
+    setLastUpdated(data.lastUpdated);
+    setGlobalData(data.globalData);
+    setLocalData(data.localData);
+    setPcrData(data.pcrData);
+    setHospitalData(data.hospitalData);
+    setIsLoading(false);
+    setError({ error: false, message: "" });
+  }
+
+  const handleHistoryDataState = (data) => {
+    if (data.error) {
+      setHistoryError({ ...error, error: true, message: data.errorMessage });
+      return;
+    }
+
+    setHistoryData(data.historyData);
+  }
+
+  const handleCountryDataState = async (data) => {
+    if (data.error) {
+      setCountryDataError({ ...countryDataError, error: true, message: data.errorMessage });
+      return;
+    }
+
+    const countriesToFiler = ["India", "Japan", "China", "Australia", "Singapore", "UAE", "Pakistan", "South Korea", "Kuwait"]
+    const countryChartData = await data.countryData.filter(data => countriesToFiler.indexOf(data.country) !== -1).map(data => {
+      return { cases: data.cases, deaths: data.deaths, recovered: data.recovered, country: data.country };
     });
-    const [hospitalData, setHospitalData] = useState([]);
-    const [dailyData, setDailyData] = useState([]);
-    const [patientChartData, setPatientChartData] = useState([]);
-    const [districtData, setDistrictData] = useState([]);
-    const [otherData, setOtherData] = useState({});
-    const [countryDataUpdatedDate, setCountryDataUpdatedDate] = useState("");
-    const [byGenderData, setByGenderData] = useState([]);
-    const [genderDataUpdatedAt, setGenderDataUpdatedAt] = useState("");
-    const [countriesReported, setCountriesReported] = useState(0);
-    const [ageChartData, setAgeChartData] = useState([]);
-    const [ageDataUpdatedAt, setAgeDataUpdatedAt] = useState("");
-    const [patientDataUpdatedAt, setPatientDataUpdatedAt] = useState("");
-    const [isAsia, setIsAsia] = useState(false);
-    const [defaultCounties] = useState(["Malaysia", "Sri Lanka", "India", "Pakistan", "Singapore", "Japan"]);
-    const [filteredCountries, setFilteredCountries] = useState([]);
-    const [asianChartData, setAsianChartData] = useState([]);
 
-    useEffect(() => {
-        fetchData(fetchCountryData);
-    }, []);
+    setCountryData(countryChartData);
+  }
 
-    const fetchCountryData = async () => {
-        try {
-            setIsLoading(true);
-            const response = await fetch(`https://intense-anchorage-68667.herokuapp.com/status`);
+  const onTypeChange = ({ target: { value } }) => {
+    setIsLocal(value);
+  }
 
-            if(!response.ok) {
-                throw Error(response.statusText);
-            }
+  useEffect(() => {
+    setIsLoading(true);
+    loadData().then(data => handleState(data));
+    loadHistoryData().then(data => handleHistoryDataState(data));
+    loadCountryData().then(data => handleCountryDataState(data));
+  }, []);
 
-            const json = await response.json();
-            const data = json.data;
+  const data = getStatData(localData, globalData, isLocal, pcrData);
+  const chartData = { pcrData, historyData, lastUpdated, countryData, historyError, countryDataError };
 
-            setDistrictData(data.district_data);
-            setOtherData(data.other_data);
-            setCountryDataUpdatedDate(data.updated_at);
+  return (
+    <Layout className="layout">
+      <Navigation/>
+      <Content className="content">
+        {isLoading && <div className="spin-root">
+          <Spin size="large" className="spin-load"/>
+        </div>}
+        {!isLoading && <>
+          {!error.error && <>
+            <HeaderPanel cardData={data} onChange={onTypeChange} lastUpdate={lastUpdated}/>
+            <ChartPanel {...chartData} />
+            <HospitalPanel hospitalData={hospitalData} admitted={localData.localTotalIndividualsIHospitals}
+                           lastUpdatedAt={lastUpdated}/>
+            <AboutPanel/>
+            <InfoPanel/>
+            <FooterPanel/>
+          </>}
 
-            const genderData = Object.entries(data.by_gender.data).map(value => {
-                return {
-                    type: value[0],
-                    value: value[1]
-                }
-            });
+          {error.error && <Result
+            status="500"
+            title="An unexpected error occurred"
+            subTitle="We will be back soon. Please try again in few minutes."
+          />}
+        </>}
 
-            setByGenderData(genderData);
-            setGenderDataUpdatedAt(data.by_gender.last_update);
-            setCountriesReported(data.countries_reported);
-            setAgeDataUpdatedAt(data.by_age.last_update);
-            setDailyData(data.daily_data);
-
-            const chartData = data.by_age.data.map(ageData => {
-                const age = Object.keys(ageData)[0];
-                const count = ageData[age];
-                return {
-                    age: age,
-                    count: +count
-                }
-            });
-
-            setAgeChartData(chartData);
-            setIsLoading(false);
-            setErrorCountryData(false);
-        } catch(e) {
-            setErrorCountryData(true);
-        }
-    };
-
-    const fetchData = async (callback) => {
-        try {
-            setIsLoading(true);
-            const response = await fetch("https://hpb.health.gov.lk/api/get-current-statistical");
-            if(!response.ok) {
-                throw Error(response.statusText);
-            }
-            const json = await response.json();
-            const data = json.data;
-
-            const formattedDate = moment(data.update_date_time, "YYYY-MM-DD HH:mm:ss", true).format("DD-MM-YYYY hh:mm A");
-
-            setState({
-                ...state,
-                update_date_time: formattedDate,
-                local_new_cases: data.local_new_cases,
-                local_total_cases: data.local_total_cases,
-                local_deaths: data.local_deaths,
-                local_new_deaths: data.local_new_deaths,
-                local_total_number_of_individuals_in_hospitals: data.local_total_number_of_individuals_in_hospitals,
-                local_recovered: data.local_recovered,
-                global_new_cases: data.global_new_cases,
-                global_total_cases: data.global_total_cases,
-                global_deaths: data.global_deaths,
-                global_new_deaths: data.global_new_deaths,
-                global_recovered: data.global_recovered
-            });
-
-            await fetch("https://pomber.github.io/covid19/timeseries.json")
-                .then(response => response.json())
-                .then(val => {
-
-                    const sriLankaData = [...val["Sri Lanka"]];
-                    const chartData = sriLankaData.map(obj => {
-                        const date = moment();
-                        const objDate = moment(obj.date, "YYYY-M-D", true);
-                        if(obj.recovered >= 2 && objDate.isBefore(date) && obj.recovered > data.local_recovered) {
-                            return {...obj, "confirmed": obj.confirmed - 1};
-                        }
-                        const formattedDate = objDate.format("DD MMM");
-                        return {...obj, date: formattedDate};
-                    });
-
-                    const lastItem = [...sriLankaData].splice(-1, 1);
-                    const updatedAt = (lastItem && lastItem.length > 0) ? lastItem[0].date : "";
-                    const formattedUpdatedAt = moment(updatedAt, "YYYY-M-D", true).format("DD-MM-YYYY hh:mm A");
-                    console.log(updatedAt);
-                    setPatientDataUpdatedAt(formattedUpdatedAt);
-                    setPatientChartData(chartData);
-
-                    const processedAsianData = [];
-
-                    ASIAN_COUNTRIES.map(country => {
-
-                        const lastIndex = val[country].length - 1;
-                        const countryData = val[country][lastIndex];
-
-                        const tempActive = {};
-                        tempActive["country"] = country;
-                        tempActive["type"] = "Confirmed cases";
-                        tempActive["value"] = countryData.confirmed;
-                        processedAsianData.push(tempActive);
-
-                        return countryData;
-                    });
-
-                    setAsianChartData([...processedAsianData]);
-                    callback();
-
-                }).catch(_ => setError(true));
-
-            setHospitalData([...hospitalData, ...data.hospital_data]);
-            setIsLoading(false);
-            setError(false);
-        } catch(error) {
-            setError(true);
-        }
-    };
-
-    function onChange(value) {
-        setIsLocal(value.target.value);
-    }
-
-    const getStatusText = (value, plural, singular) => {
-        const val = formatNumber(value);
-        return val === "1" ? val + " " + singular : val + " " + plural;
-    };
-
-    function onChangeChart(value) {
-        setIsAsia(value.target.value);
-    }
-
-    function onChangeCountry(countries) {
-        defaultCounties.forEach(element => {
-            filteredCountries.push(element);
-        });
-        countries.forEach(element => {
-            filteredCountries.push(element);
-        });
-        setFilteredCountries([filteredCountries]);
-    }
-
-    const cases = {
-        text: TOTAL_CASES,
-        value: isLocal ? state.local_total_cases : state.global_total_cases,
-        newText: isLocal ? getStatusText(state.local_new_cases, NEW_CASES, NEW_CASE) : getStatusText(state.global_new_cases, NEW_CASES, NEW_CASE),
-        icon: faAmbulance,
-        style: "#ff8f2f"
-    };
-
-    const deaths = {
-        text: DEATHS,
-        value: isLocal ? state.local_deaths : state.global_deaths,
-        newText: isLocal ? getStatusText(state.local_new_deaths, NEW_DEATHS, NEW_DEATH) : getStatusText(state.global_new_deaths, NEW_DEATHS, NEW_DEATH),
-        icon: faBed,
-        style: "#ff4d4f"
-    };
-
-    const recovered = {
-        text: isLocal ? LOCAL_RECOVERED : GLOBAL_RECOVERED,
-        value: isLocal ? state.local_recovered : state.global_recovered,
-        icon: faWalking,
-        style: "#52c41a"
-    };
-
-    const data = {
-        main: [cases, deaths, recovered],
-        inHospital: state.local_total_number_of_individuals_in_hospitals,
-        countries: countriesReported,
-        other: otherData
-    };
-
-    const patientChartConf = {
-        config: {
-            title: {
-                visible: false
-            },
-            description: {
-                visible: false
-            },
-            padding: "auto",
-            forceFit: true,
-            point: {
-                visible: true,
-                size: 4
-            },
-            responsive: true,
-            smooth: true,
-            chartData: isAsia ? asianChartData : patientChartData,
-            label: {
-                visible: false,
-                offset: 20,
-                type: "point"
-            },
-            lineChart: !isAsia,
-            xField: isAsia ? "value" : "date",
-            yField: isAsia ? "country" : "confirmed",
-            stackField: isAsia ? "type" : "",
-            yAxis: {
-                tickCount: isAsia ? 18 : 10
-            },
-            xAxis: {
-                tickCount: 5
-            },
-            height: 500,
-            style: {
-                width: "100%"
-            },
-            legend: {
-                visible: false
-            }
-        },
-        countries: [defaultCounties, filteredCountries],
-        onChange: [onChangeChart, onChangeCountry]
-    };
-
-    return (
-        <Layout className="layout">
-            <BackTop/>
-            <Header>
-                <Title level={3} className="logo">COVID-19 Sri Lanka Tracker</Title>
-            </Header>
-            <Content className="content">
-                {isLoading && <div className="spin-root">
-                    <Spin size="large" className="spin-load"/>
-                </div>}
-                {!isLoading && <div>
-                    {!isError && <div>
-                        <Row className="card-list">
-                            <CardPanel cardData={data} onChange={onChange} lastUpdate={state.update_date_time}
-                                       isLocal={isLocal}/>
-                            <QAPanel/>
-                        </Row>
-                        {!isErrorCountryData && <div>
-                            <Row justify="space-around" gutter={[32, 16]}>
-                                <Col xs={{span: 24}} sm={{span: 24}} md={{span: 24}} lg={{span: 24}} xl={{span: 13}}
-                                     xxl={{span: 15}}>
-                                    <PatientChart data={patientChartConf} updatedAt={patientDataUpdatedAt}/>
-                                    <GenderChart chartData={byGenderData} updatedAt={genderDataUpdatedAt}/>
-                                </Col>
-                                <Col xs={{span: 24}} sm={{span: 24}} md={{span: 24}} lg={{span: 24}} xl={{span: 11}}
-                                     xxl={{span: 9}}
-                                     style={{display: "flex"}}>
-                                    <DistrictMapPanel districtData={districtData} updatedDate={countryDataUpdatedDate}/>
-                                </Col>
-                            </Row>
-                            <Row justify="space-around">
-                                <ChartPanel ageChartData={ageChartData}
-                                            ageDataUpdatedAt={ageDataUpdatedAt}
-                                            patientChartData={dailyData}
-                                            patientDataUpdatedAt={countryDataUpdatedDate}/>
-                            </Row>
-                            <Row>
-                                <DistrictPanel districtData={districtData} updatedDate={countryDataUpdatedDate}/>
-                            </Row>
-                        </div>}
-                        {isErrorCountryData && <Row>
-                            <Text>Unable to display country based analysis at this moment.</Text>
-                        </Row>}
-                        <Row>
-                            <HospitalPanel hospitalData={hospitalData}
-                                           admitted={state.local_total_number_of_individuals_in_hospitals}
-                                           lastUpdatedAt={state.update_date_time}/>
-                        </Row>
-                        <Row>
-                            <PanelPage/>
-                        </Row>
-                    </div>}
-
-                    {isError && <Result
-                        status="500"
-                        title="An unexpected error occurred"
-                        subTitle="We will be back soon. Please try again in few minutes."
-                    />}
-                </div>}
-
-            </Content>
-            {!isLoading && <Footer className="footer">Made with ❤ by <a href="https://dhanushka.dev/">Dhanushka</a>
-            </Footer>}
-        </Layout>
-    );
+      </Content>
+      {!isLoading && <Footer className="footer">Made with ❤ by <a href="https://dhanushka.dev/">Dhanushka</a>
+      </Footer>}
+    </Layout>
+  );
 }
 
 export default App;
