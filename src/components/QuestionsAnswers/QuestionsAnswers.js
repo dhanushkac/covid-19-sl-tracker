@@ -8,7 +8,7 @@ const QuestionsAnswers = () => {
   return (
     <Col xs={{ span: 24, offset: 0 }} sm={{ span: 24 }} md={{ span: 12 }}
          lg={{ span: 12 }} xl={{ span: 12 }}>
-      <Title>Q&A on coronaviruses (COVID-19)</Title>
+      <Title level={3}>Q&A on coronaviruses (COVID-19)</Title>
       <Collapse defaultActiveKey={[""]}>
         <Panel header="What is a coronavirus?" key="1">
           <p>Coronaviruses are a large family of viruses which may cause illness in animals or

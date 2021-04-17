@@ -9,7 +9,7 @@ const SpreadPreventPanel = () => {
   return (
     <div style={{ marginTop: '36px' }}>
       <div>
-        <div style={{ marginBottom: "40px" }}><Title>Steps to help prevent the spread of COVID-19 if you
+        <div style={{ marginBottom: "40px" }}><Title level={3}>Steps to help prevent the spread of COVID-19 if you
           are sick</Title></div>
         <SpreadPreventItem title="Stay home except to get medical care"
                            text="People who are mildly ill with COVID-19 are able to recover at home. Do not leave, except to get medical care. Do not visit public areas. Avoid using public transportation, ride-sharing, or taxis. Call before you get medical care. Be sure to get care if you feel worse or you think it is an emergency."

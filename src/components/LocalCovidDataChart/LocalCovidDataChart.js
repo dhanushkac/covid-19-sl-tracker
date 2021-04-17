@@ -8,8 +8,29 @@ const { Title } = Typography;
 
 const LocalCovidDataChart = ({ data, updatedAt }) => {
 
+  const chartData = data.reduce((res, val) => {
+    res = [...res, {
+      date: val.date,
+      value: val.cases_count,
+      type: "Cases"
+    },
+      {
+        date: val.date,
+        value: val.recoveries_count,
+        type: "Recoveries"
+      },
+      {
+        date: val.date,
+        value: val.deaths_count,
+        type: "Deaths"
+      }
+    ]
+
+    return res;
+  }, []);
+
   const config = {
-    data,
+    data: chartData,
     xField: 'date',
     yField: 'value',
     seriesField: 'type',
@@ -25,7 +46,7 @@ const LocalCovidDataChart = ({ data, updatedAt }) => {
 
   return <Row>
     <Col span={24} className="chart-grid">
-      <Title level={4}>The Daily Local COVID Data
+      <Title level={4}>Sri Lanka COVID-19 Status
       </Title>
       <LastUpdate updated={updatedAt}/>
       <AreaChart {...config} />

@@ -67,28 +67,7 @@ export const loadHistoryData = async () => {
     validateResponse(response);
 
     const json = await response.json();
-    const data = json.data.reverse();
-
-    result.historyData = data.reduce((res, val) => {
-      res = [...res, {
-        date: val.date,
-        value: val.cases_count,
-        type: "Cases"
-      },
-        {
-          date: val.date,
-          value: val.recoveries_count,
-          type: "Recoveries"
-        },
-        {
-          date: val.date,
-          value: val.deaths_count,
-          type: "Deaths"
-        }
-      ]
-
-      return res;
-    }, []);
+    result.historyData = json.data.reverse();
 
   } catch (error) {
     result.error = true;

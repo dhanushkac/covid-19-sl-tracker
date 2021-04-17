@@ -9,7 +9,7 @@ import AboutPanel from "./panels/AboutPanel/AboutPanel";
 import InfoPanel from "./panels/InfoPanel";
 import Navigation from "./components/Navigation";
 import { INITIAL_GLOBAL_DATA, INITIAL_LOCAL_DATA } from "./utils/state";
-import { getStatData } from "./utils/stat.helper";
+import { getContinentData, getCountryChartData, getStatData } from "./utils/stat.helper";
 import { loadCountryData, loadData, loadHistoryData } from "./services/main.service";
 
 import "./App.css";
@@ -28,6 +28,15 @@ function App() {
   const [hospitalData, setHospitalData] = useState([]);
   const [historyData, setHistoryData] = useState([]);
   const [countryData, setCountryData] = useState([]);
+  const [continentData, setContinentData] = useState({
+    "Antarctica": 0,
+    "Africa": 0,
+    "Asia": 0,
+    "Australia/Oceania": 0,
+    "Europe": 0,
+    "North America": 0,
+    "South America": 0,
+  });
 
   const [error, setError] = useState({ error: false, message: "" });
   const [historyError, setHistoryError] = useState({ error: false, message: "" });
@@ -63,11 +72,10 @@ function App() {
       return;
     }
 
-    const countriesToFiler = ["India", "Japan", "China", "Australia", "Singapore", "UAE", "Pakistan", "South Korea", "Kuwait"]
-    const countryChartData = await data.countryData.filter(data => countriesToFiler.indexOf(data.country) !== -1).map(data => {
-      return { cases: data.cases, deaths: data.deaths, recovered: data.recovered, country: data.country };
-    });
+    const countryChartData = await getCountryChartData(data.countryData);
+    const continentData = await getContinentData(data.countryData);
 
+    setContinentData(continentData);
     setCountryData(countryChartData);
   }
 
@@ -83,7 +91,7 @@ function App() {
   }, []);
 
   const data = getStatData(localData, globalData, isLocal, pcrData);
-  const chartData = { pcrData, historyData, lastUpdated, countryData, historyError, countryDataError };
+  const chartData = { pcrData, historyData, lastUpdated, countryData, continentData, historyError, countryDataError };
 
   return (
     <Layout className="layout">
@@ -111,7 +119,9 @@ function App() {
         </>}
 
       </Content>
-      {!isLoading && <Footer className="footer">Made with ❤ by <a href="https://dhanushka.dev/">Dhanushka</a>
+      {!isLoading &&
+      <Footer className="footer">
+        <div>Made with ❤ by <a href="https://dhanushka.dev/">Dhanushka</a></div>
       </Footer>}
     </Layout>
   );

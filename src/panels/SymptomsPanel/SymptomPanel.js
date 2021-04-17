@@ -6,7 +6,7 @@ const { Title, Text } = Typography;
 const SymptomPanel = () => {
   return (
     <div style={{ marginTop: '36px' }}>
-      <Title>Main Symptoms</Title>
+      <Title level={3}>Main Symptoms</Title>
       <Text>These are the most common symptoms of COVID-19. Some people become infected but don’t develop
         any symptoms and don't feel unwell. Most people (about 80%) recover from the disease without
         needing special treatment.</Text>

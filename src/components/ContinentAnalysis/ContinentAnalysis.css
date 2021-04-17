@@ -1,0 +1,10 @@
+.continent {
+  text-align: center;
+  border: 1px solid #eeeeee;
+  padding: 10px 0 20px 0;
+  margin: 20px 10px;
+}
+
+.continentTitle {
+  margin-bottom: 1.5em;
+}

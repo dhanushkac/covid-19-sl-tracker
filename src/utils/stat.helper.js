@@ -90,3 +90,31 @@ export const getStatData = (localData, globalData, isLocal, pcrData) => {
 
   return data;
 }
+
+export const getContinentData = async (countryData) => {
+  return await countryData.reduce((result, value) => {
+
+    if (!value.continent) {
+      return result;
+    }
+
+    const cases = result[value.continent] + value.cases;
+    result = { ...result, [value.continent]: cases }
+
+    return result;
+  }, {
+    "Africa": 0,
+    "Asia": 0,
+    "Australia/Oceania": 0,
+    "Europe": 0,
+    "North America": 0,
+    "South America": 0,
+  });
+}
+
+export const getCountryChartData = async (countryData) => {
+  const countriesToFiler = ["India", "Germany", "Poland", "Brazil", "France", "Turkey", "Russia", "Turkey", "Italy"]
+  return await countryData.filter(data => countriesToFiler.indexOf(data.country) !== -1).map(data => {
+    return { cases: data.cases, deaths: data.deaths, recovered: data.recovered, country: data.country };
+  });
+}

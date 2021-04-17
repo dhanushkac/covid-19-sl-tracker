@@ -11,15 +11,15 @@ const GlobalCovidDataChart = ({ data, updatedAt }) => {
 
   const chartData = data.reduce((arr, val) => {
     arr = [...arr, {
-      type: "cases",
+      type: "Cases",
       country: val.country,
       value: val.cases
     }, {
-      type: "deaths",
+      type: "Deaths",
       country: val.country,
       value: val.deaths
     }, {
-      type: "recovered",
+      type: "Recovered",
       country: val.country,
       value: val.recovered
     }];
@@ -34,7 +34,17 @@ const GlobalCovidDataChart = ({ data, updatedAt }) => {
     yField: 'country',
     seriesField: 'type',
     color: ({ type }) => {
-      return type==='cases' ? '#1fbcec' : ( type === 'deaths' ? '#d76e60' :  '#60d7a7');
+      return type==='Cases' ? '#1fbcec' : ( type === 'Deaths' ? '#d76e60' :  '#60d7a7');
+    },
+    xAxis: {
+      label: {
+        formatter: (v) => `${v}`.replace(/\d{1,3}(?=(\d{3})+$)/g, (s) => `${s},`),
+      }
+    },
+    tooltip: {
+      formatter: (v) => {
+        return { name: v.type, value: `${v.value}`.replace(/\d{1,3}(?=(\d{3})+$)/g, (s) => `${s},`) }
+      },
     },
     label: {
       position: 'middle',
@@ -46,22 +56,20 @@ const GlobalCovidDataChart = ({ data, updatedAt }) => {
     },
   }
 
-  return <Row>
-    <Col span={24} className="chart-grid">
-      <Row>
-        <Col span={18}>
-          <Title level={4}>The Global COVID Status</Title>
-        </Col>
-        <Col span={6} style={{ display: 'flex', justifyContent: 'flex-end', alignItems: 'center' }}>
-          <Button disabled type="dashed" icon={<ArrowRightOutlined/>} size={'medium'}>
-            View Detailed Report
-          </Button>
-        </Col>
-      </Row>
-      <LastUpdate updated={updatedAt}/>
-      <BarChart {...config} />
-    </Col>
-  </Row>;
+  return <Col span={24} className="chart-grid">
+    <Row>
+      <Col span={18}>
+        <Title level={4}>Global COVID-19 Status</Title>
+      </Col>
+      <Col span={6} style={{ display: 'flex', justifyContent: 'flex-end', alignItems: 'center' }}>
+        <Button disabled type="dashed" icon={<ArrowRightOutlined/>} size={'medium'}>
+          View Detailed Report
+        </Button>
+      </Col>
+    </Row>
+    <LastUpdate updated={updatedAt}/>
+    <BarChart {...config} />
+  </Col>;
 }
 
 

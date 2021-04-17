@@ -13,8 +13,8 @@ const HospitalPanel = ({ hospitalData, lastUpdatedAt }) => {
   return <Row>
     <Col xs={{ span: 24 }} sm={{ span: 24 }} md={{ span: 24 }} style={{ marginTop: "25px" }}>
       <div className="hospital-panel">
-        <Title style={{ marginTop: "40px", marginBottom: "0" }} level={2}>Current status of the hospitals -
-          treated or observed</Title>
+        <Title style={{ marginTop: "40px", marginBottom: "0" }} level={3}>Current status of the hospitals -
+          Treated or Observed</Title>
         <LastUpdate updated={lastUpdatedAt} style={{ marginBottom: "10px" }}/>
         <Row>
           <HospitalGrid data={hospitalData}/>
