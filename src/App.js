@@ -38,46 +38,7 @@ function App() {
     "South America": 0,
   });
 
-  const [error, setError] = useState({ error: false, message: "" });
-  const [historyError, setHistoryError] = useState({ error: false, message: "" });
-  const [countryDataError, setCountryDataError] = useState({ error: false, message: "" });
-
-  const handleState = (data) => {
-    if (data.error) {
-      setError({ ...error, error: true, message: data.errorMessage });
-      return;
-    }
-
-    setLastUpdated(data.lastUpdated);
-    setGlobalData(data.globalData);
-    setLocalData(data.localData);
-    setPcrData(data.pcrData);
-    setHospitalData(data.hospitalData);
-    setIsLoading(false);
-    setError({ error: false, message: "" });
-  }
-
-  const handleHistoryDataState = (data) => {
-    if (data.error) {
-      setHistoryError({ ...error, error: true, message: data.errorMessage });
-      return;
-    }
-
-    setHistoryData(data.historyData);
-  }
-
-  const handleCountryDataState = async (data) => {
-    if (data.error) {
-      setCountryDataError({ ...countryDataError, error: true, message: data.errorMessage });
-      return;
-    }
-
-    const countryChartData = await getCountryChartData(data.countryData);
-    const continentData = await getContinentData(data.countryData);
-
-    setContinentData(continentData);
-    setCountryData(countryChartData);
-  }
+  const [error, setError] = useState(false);
 
   const onTypeChange = ({ target: { value } }) => {
     setIsLocal(value);
@@ -85,13 +46,33 @@ function App() {
 
   useEffect(() => {
     setIsLoading(true);
-    loadData().then(data => handleState(data));
-    loadHistoryData().then(data => handleHistoryDataState(data));
-    loadCountryData().then(data => handleCountryDataState(data));
+
+    const fetchData = async () => {
+      const data = await loadData();
+      setLastUpdated(data.lastUpdated);
+      setGlobalData(data.globalData);
+      setLocalData(data.localData);
+      setPcrData(data.pcrData);
+      setHospitalData(data.hospitalData);
+      setIsLoading(false);
+      setError(false);
+
+      const _historyData = await loadHistoryData();
+      setHistoryData(_historyData);
+
+      const _countryData = await loadCountryData();
+      const countryChartData = await getCountryChartData(_countryData);
+      const continentData = await getContinentData(_countryData);
+
+      setContinentData(continentData);
+      setCountryData(countryChartData);
+    }
+
+    fetchData().catch(_ => setError(true));
   }, []);
 
   const data = getStatData(localData, globalData, isLocal, pcrData);
-  const chartData = { pcrData, historyData, lastUpdated, countryData, continentData, historyError, countryDataError };
+  const chartData = { pcrData, historyData, lastUpdated, countryData, continentData };
 
   return (
     <Layout className="layout">
@@ -101,7 +82,7 @@ function App() {
           <Spin size="large" className="spin-load"/>
         </div>}
         {!isLoading && <>
-          {!error.error && <>
+          {!error && <>
             <HeaderPanel cardData={data} onChange={onTypeChange} lastUpdate={lastUpdated}/>
             <ChartPanel {...chartData} />
             <HospitalPanel hospitalData={hospitalData} admitted={localData.localTotalIndividualsIHospitals}
@@ -111,7 +92,7 @@ function App() {
             <FooterPanel/>
           </>}
 
-          {error.error && <Result
+          {error && <Result
             status="500"
             title="An unexpected error occurred"
             subTitle="We will be back soon. Please try again in few minutes."

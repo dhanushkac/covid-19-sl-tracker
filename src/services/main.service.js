@@ -7,8 +7,6 @@ export const loadData = async () => {
 
   const result = {
     lastUpdated: "",
-    error: false,
-    errorMessage: "",
     globalData: {},
     localData: {},
     hospitalData: {},
@@ -46,8 +44,7 @@ export const loadData = async () => {
     result.hospitalData = [...data.hospital_data];
     result.loading = false;
   } catch (error) {
-    result.error = true;
-    result.errorMessage = error.message;
+    throw error;
   }
 
   return result;
@@ -55,44 +52,29 @@ export const loadData = async () => {
 
 export const loadHistoryData = async () => {
 
-  const result = {
-    error: false,
-    errorMessage: "",
-    historyData: []
-  };
-
   try {
     const response = await fetch(`${BASE_URL}/get-statistical-history-data`);
 
     validateResponse(response);
 
     const json = await response.json();
-    result.historyData = json.data.reverse();
+    return json.data.reverse();
 
   } catch (error) {
-    result.error = true;
-    result.errorMessage = error.message;
+    throw error;
   }
-
-  return result;
 }
 
 export const loadCountryData = async () => {
-  const result = {
-    error: false,
-    errorMessage: "",
-    countryData: []
-  };
-
   try {
     const response = await fetch(GLOBAL_BASE_URL);
-    result.countryData = await response.json();
-  } catch (error) {
-    result.error = true;
-    result.errorMessage = error.message;
-  }
 
-  return result;
+    validateResponse(response);
+
+    return await response.json();
+  } catch (error) {
+    throw error;
+  }
 }
 
 function validateResponse(response) {

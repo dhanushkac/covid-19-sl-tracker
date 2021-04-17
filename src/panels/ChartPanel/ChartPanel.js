@@ -11,19 +11,16 @@ const ChartPanel = ({
                       lastUpdated,
                       pcrData,
                       historyData,
-                      historyError,
                       countryData,
                       continentData,
-                      countryDataError
                     }) => {
   return (
     <React.Fragment>
-      {!historyError.error &&
       <Row>
         <Col span="24">
           <LocalCovidDataChart data={historyData} updatedAt={lastUpdated}/>
         </Col>
-      </Row>}
+      </Row>
       <Row>
         <Col span="24">
           <Row justify="space-between" gutter={[32, 16]}>
@@ -42,8 +39,7 @@ const ChartPanel = ({
         <Col span="24">
           <Row justify="space-between" gutter={[32, 16]}>
             <Col xs={{ span: 24 }} sm={{ span: 24 }} md={{ span: 24 }} lg={{ span: 12 }} xl={{ span: 12 }}>
-              {!countryDataError.error &&
-              <GlobalCovidDataChart data={countryData} updatedAt={lastUpdated}/>}
+              <GlobalCovidDataChart data={countryData} updatedAt={lastUpdated}/>
             </Col>
             <Col xs={{ span: 24 }} sm={{ span: 24 }} md={{ span: 24 }} lg={{ span: 12 }} xl={{ span: 12 }}
                  style={{ display: "flex" }}>
