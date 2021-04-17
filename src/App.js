@@ -102,7 +102,7 @@ function App() {
       </Content>
       {!isLoading &&
       <Footer className="footer">
-        <div>COVID-19 Sri Lanka Tracker ©️ { new Date().getFullYear() }</div>
+        <div>COVID-19 Sri Lanka Tracker <span role="img" aria-label="">©️</span> {new Date().getFullYear()}</div>
         <div>Made with ❤ by <a href="https://dhanushka.dev/">Dhanushka</a></div>
       </Footer>}
     </Layout>
